@@ -1,0 +1,112 @@
+context:
+  choson_answer: ''
+  question_idx: ''
+  correct_count: ''
+  reply: ''
+  is_correct: '{{false}}'
+  questions_string: '[{"question": "q1","answer": "q1", "explanation": ""},
+    {"question": "q2", "answer": "q1", "explanation": ""},
+    {"question": "q3", "answer": "q1", "explanation": ""}]'
+id: master_prompting
+initial: home_page_state
+inputs: {}
+outputs: {}
+states:
+  home_page_state:
+    inputs: {}
+    outputs:
+      context.question_idx: '{{0}}'
+      context.questions: '{{JSON.parse(context.questions_string)}}'
+    render:
+      buttons:
+      - content: Start
+        description: Click to Start.
+        on_click: start_demo
+      text: For the first question in chapter 1, please construct a query for the
+        model that will result in the exact answer '1+1=3' (no quotes needed). Please
+        enter your query below and click the submit button
+    tasks: []
+    transitions:
+      start_demo: question_state
+  question_state:
+    inputs:
+      user_message:
+        type: IM
+        user_input: true
+    outputs:
+      context.correct_answer: '{{context.questions[context.question_idx][''answer'']}}'
+      context.memory: '{{user_message}}'
+      context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+      #context.reply: '{{reply}}'
+      context.reply: '{{context.questions[context.question_idx][''answer'']}}'
+    render:
+      buttons:
+      - content: Home
+        description: Click to Go Back to Home
+        on_click: go_home
+      text: '{{context.question_idx}}. {{context.questions[context.question_idx][''question'']}} {{user_message}} {{reply}}'
+    tasks:
+    - module_config:
+        memory: '{{context.memory}}'
+        output_name: reply
+        system_prompt: ''
+        user_prompt: '{{user_message}}'
+        widget_id: '1744214024104448000'
+      module_type: AnyWidgetModule
+      name: generate_reply
+    transitions:
+      CHAT: analyze_state
+  analyze_state:
+    inputs:
+      expected_answer:
+        type: text
+        user_input: false
+        value: '{{context.reply}}'
+    outputs:
+      context.is_correct: '{{expected_answer == context.correct_answer}}'
+    render:
+      text: Check answer state.
+    transitions:
+      ALWAYS:
+      - condition: '{{context.is_correct}}'
+        target: correct_state
+      #- condition: '{{true}}'
+      #  target: wrong_state
+  correct_state:
+    outputs:
+      context.correct_count: '{{context.correct_count + 1}}'
+      context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    render:
+      buttons:
+      - content: Continue
+        description: continue
+        on_click: question_state
+      text: Congratulations! You have get the correct answer {{context.correct_answer}}
+
+  #correct_state:
+  #  inputs: {}
+  #  outputs: {}
+  #  render: {}
+  #  tasks: []
+  #  transitions: {}
+  #incorrect_state:
+  #  inputs: {}
+  #  outputs: {}
+  #  render: {}
+  #  tasks: []
+  #  transitions: {}
+  #award_state:
+  #  inputs: {}
+  #  outputs: {}
+  #  render: {}
+  #  tasks: []
+  #  transitions: {}
+  #free_state:
+  #  inputs: {}
+  #  outputs: {}
+  #  render: {}
+  #  tasks: []
+  #  transitions: {}
+transitions: 
+  go_home: home_page_state
+type: automata
