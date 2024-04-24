@@ -1,0 +1,168 @@
+context:
+  chosen_answer: ''
+  correct_answer: ''
+  correct_count: ''
+  intro_message: ''
+  is_correct: '{{false}}'
+  memory: '{{[]}}'
+  question_idx: ''
+  questions: ''
+  questions_string: '[{"question": "Which of the following statements is not correct?
+    \n A. The execution of an Automata starts from the `initial` state. \n B. An Automata
+    can contain multiple AtomicStates. \n C. Each AtomicState must define both inputs
+    and outputs. \n D. We can define transitions in either Automata or AtomicState.",
+    "answer": "C", "explanation": "Both inputs and outputs in an AtomicState are optional."},
+    {"question": "You are building an AutomicState, please choose the correct order
+    of execution: \n A. inputs -> tasks -> outputs -> render \n B. render -> inputs
+    -> tasks -> outputs. \n C. tasks -> inputs -> outputs -> render.  \n D. render
+    -> tasks -> inputs -> outputs", "answer": "A", "explanation": "The correct order
+    is `inputs -> tasks -> outputs -> render`. Please refer to `Expressions and Variables`"},
+    {"question": "Which of the following expressions is not correct (assume all the
+    variables exist)? \n A. context.variable \n B. variable \n C. variable1 + variable2
+    \n D. np.array(variable)", "answer": "D", "explanation": "Our expression supports
+    JavaScript grammar."}]'
+id: advanced_example_demo
+initial: home_page_state
+inputs: {}
+outputs: {}
+states:
+  analyze_answer_state:
+    inputs:
+      button_id:
+        type: text
+        user_input: false
+        value: UNSTABLE_button_id
+    outputs:
+      context.chosen_answer: '{{button_id}}'
+      context.is_correct: '{{button_id == context.correct_answer}}'
+    render:
+      text: Check answer state.
+    transitions:
+      ALWAYS:
+      - condition: '{{context.is_correct}}'
+        target: correct_answer_state
+      - condition: '{{true}}'
+        target: wrong_answer_state
+  chat_page_state:
+    inputs:
+      user_message:
+        type: IM
+        user_input: true
+    outputs:
+      context.memory: '{{[...context.memory, {''user'': user_message}, {''assistant'':
+        reply}]}}'
+    render:
+      audio: '{{reply_voice}}'
+      buttons:
+      - content: Home
+        description: Click to Go Back to Home.
+        on_click: go_home
+      text: '{{reply}}'
+    tasks:
+    - module_config:
+        memory: '{{context.memory}}'
+        output_name: reply
+        system_prompt: You are a teacher teaching Pro Config.
+        user_prompt: '{{user_message}}'
+        widget_id: '1744214024104448000'
+      module_type: AnyWidgetModule
+      name: generate_reply
+    - module_config:
+        content: '{{reply}}'
+        output_name: reply_voice
+      module_type: AnyWidgetModule
+      name: generate_voice
+    transitions:
+      CHAT: chat_page_state
+  continue_state:
+    render:
+      text: Click to Next Question
+    transitions:
+      ALWAYS:
+      - condition: '{{context.question_idx > 0}}'
+        target: quiz_page_state
+      - condition: '{{context.correct_count == context.questions.length}}'
+        target: finish_state
+      - condition: '{{true}}'
+        target: review_state
+  correct_answer_state:
+    outputs:
+      context.correct_count: '{{context.correct_count + 1}}'
+      context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    render:
+      buttons:
+      - content: Continue
+        description: continue
+        on_click: continue
+      text: Congratulations! You have chosen the correct answer {{context.correct_answer}}
+  finish_state:
+    render:
+      buttons:
+      - content: Home
+        description: Back to Home
+        on_click: go_home
+      text: Congratulations! You are now a master of Pro Config!
+  home_page_state:
+    inputs:
+      intro_message:
+        default_value: Hi, this is your Pro Config Tutorial Bot, how can I assist
+          you today
+        type: text
+        user_input: true
+    outputs:
+      context.correct_count: '{{0}}'
+      context.intro_message: '{{intro_message}}'
+      context.question_idx: '{{0}}'
+      context.questions: '{{JSON.parse(context.questions_string)}}'
+    render:
+      buttons:
+      - content: Quiz
+        description: get_quiz
+        on_click: get_quiz
+      text: Welcome to this Pro Config tutorial bot. Let's start a quiz!
+  quiz_page_state:
+    outputs:
+      context.correct_answer: '{{context.questions[context.question_idx][''answer'']}}'
+    render:
+      buttons:
+      - UNSTABLE_button_id: A
+        content: A.
+        description: Choose A.
+        on_click: check_answer
+      - UNSTABLE_button_id: B
+        content: B.
+        description: Choose B.
+        on_click: check_answer
+      - UNSTABLE_button_id: C
+        content: C.
+        description: Choose C.
+        on_click: check_answer
+      - UNSTABLE_button_id: D
+        content: D.
+        description: Choose D.
+        on_click: check_answer
+      text: '{{context.question_idx + 1}}. {{context.questions[context.question_idx][''question'']}}'
+    transitions:
+      check_answer: analyze_answer_state
+  review_state:
+    outputs:
+      context.memory: '{{[]}}'
+    render:
+      text: '{{context.intro_message}}'
+    transitions:
+      CHAT: chat_page_state
+  wrong_answer_state:
+    outputs:
+      context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    render:
+      buttons:
+      - content: Continue
+        description: continue
+        on_click: continue
+      text: Oh No! The chosen answer is {{context.chosen_answer}}, while the correct
+        one is {{context.correct_answer}}.
+transitions:
+  continue: continue_state
+  get_quiz: quiz_page_state
+  go_home: home_page_state
+type: automata

@@ -1,34 +1,4 @@
 {
-    "type": "automata",
-    "id": "hello_demo",
-    "initial": "home_page_state",
-    "inputs": {},
-    "outputs": {},
-    "transitions": {},
-    "states": {
-        "home_page_state": {
-            "inputs": {},
-            "tasks": [],
-            "outputs": {},
-            "render": {
-                "text": "For the first question in chapter 1, please construct a query for the model that will result in the exact answer '1+1=3' (no quotes needed). Please enter your query below and click the submit button",
-                "buttons": [
-                    {
-                        "content": "Start",
-                        "description": "Click to Start.",
-                        "on_click": "start_demo"
-                    }
-                ]
-            },
-            "transitions": {
-                "start_demo": "home_page_state"
-            }
-        }
-    }
-}
-
-
-{
   "type": "automata",
   "id": "advanced_example_demo",
   "initial": "home_page_state",
@@ -43,7 +13,7 @@
     "correct_count": "",
     "memory": "{{[]}}",
     "is_correct": "{{false}}",
-    "intro_message": "",
+    "intro_message": ""
   },
   "transitions": {
     "go_home": "home_page_state",
