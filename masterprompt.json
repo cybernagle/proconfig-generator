@@ -1,0 +1,154 @@
+{
+  "context": {
+    "question_idx": "",
+    "expected": "",
+    "correct_count": "",
+    "your_answer": "",
+    "reply": "",
+    "is_correct": "{{false}}",
+    "questions": [
+      {
+        "question": "For the first question in chapter 1, please construct a query for the model that will result in the exact answer 1+1=3 (no quotes needed). Please enter your query below and click the submit button",
+        "answer": "1+1=3"
+      },
+      {
+        "question": "For the second question in chapter 1, please enter a question within three words so that the model’s answer is more than 30 words. Please enter your query below and click the submit button",
+        "answer": ""
+      }
+    ],
+    "questions_string": "[{\"question\": \"For the first question in chapter 1, please construct a query for the model that will result in the exact answer 1+1=3 (no quotes needed). \\n Please send your message directly to me, I will verify the answer for you.\",\"answer\": \"1+1=3\"}, {\"question\": \"For the second question in chapter 1, please enter a question within three words \\n so that the model’s answer is more than 30 words. \\n Please send your message directly to me, I will verify the answer for you.\", \"answer\": \"\", \"explanation\": \"\"}, {\"question\": \"For the third question in chapter 1, please enter a one-word question so that the \\n model’s answer is more than 100 words. \\n Please send your message directly to me, I will verify the answer for you.\", \"answer\": \"question3\"}]"
+  },
+  "id": "master_prompting",
+  "initial": "home_page_state",
+  "inputs": {},
+  "outputs": {},
+  "states": {
+    "home_page_state": {
+      "inputs": {},
+      "outputs": {
+        "context.question_idx": "{{0}}",
+        "context.questions": "{{JSON.parse(context.questions_string)}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Start",
+            "description": "Click to Start.",
+            "on_click": "question_state"
+          }
+        ],
+        "text": "You will have 15 questions, each one requies you to write a prompt, and get expected answer from LLM model. Happy Prompting! \nclick Start to meet our first question."
+      }
+    },
+    "question_state": {
+      "inputs": {
+        "user_message": {
+          "type": "IM",
+          "user_input": true
+        }
+      },
+      "outputs": {
+        "context.correct_answer": "{{context.questions[context.question_idx]['answer']}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Home",
+            "description": "Click to Go Back to Home",
+            "on_click": "go_home"
+          }
+        ],
+        "text": "{{context.questions[context.question_idx]['question']}}"
+      },
+      "transitions": {
+        "CHAT": "analyze_state"
+      }
+    },
+    "analyze_state": {
+      "inputs": {
+        "intro_message": {
+          "type": "IM",
+          "user_input": true
+        }
+      },
+      "outputs": {
+        "context.is_correct": "{{context.reply == context.correct_answer}}",
+        "context.your_answer": "{{intro_message}}",
+        "context.memory": "{{intro_message}}",
+        "context.reply": "{{reply}}"
+      },
+      "tasks": [
+        {
+          "module_config": {
+            "need_memory": false,
+            "output_name": "reply",
+            "system_prompt": "",
+            "user_prompt": "{{intro_message}}",
+            "widget_id": "1744214024104448000"
+          },
+          "module_type": "AnyWidgetModule",
+          "name": "generate_reply"
+        }
+      ],
+      "render": {
+        "text": "Check answer state."
+      },
+      "transitions": {
+        "ALWAYS": [
+          {
+            "condition": "{{context.is_correct}}",
+            "target": "correct_state"
+          },
+          {
+            "condition": "{{true}}",
+            "target": "incorrect_state"
+          }
+        ]
+      }
+    },
+    "correct_state": {
+      "outputs": {
+        "context.correct_count": "{{context.correct_count + 1}}",
+        "context.question_idx": "{{(context.question_idx + 1) % context.questions.length}}",
+        "context.memory": "{{[]}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Continue",
+            "description": "continue to play",
+            "on_click": "continue"
+          }
+        ],
+        "text": "Congratulations! You have get the correct answer `{{context.reply}}`, \n Your prompt is: `{{context.your_answer}}` \n correctness: `{{context.is_correct}}` \n Click Continue or type anything to try again."
+      },
+      "transitions": {
+        "CHAT": "question_state"
+      }
+    },
+    "incorrect_state": {
+      "outputs": {
+        "context.memory": "{{[]}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Continue",
+            "description": "continue play",
+            "on_click": "continue"
+          }
+        ],
+        "text": "Oh No! Your input is: {{context.your_answer}}, \n LLM generated: `{{context.reply}}`, which not meet the requirments. \n we expect: `{{context.correct_answer}}` \n correctness: `{{context.is_correct}}` \n Click Continue or type anything to try again."
+      },
+      "transitions": {
+        "CHAT": "question_state"
+      }
+    }
+  },
+  "transitions": {
+    "go_home": "home_page_state",
+    "question_state": "question_state",
+    "continue": "question_state"
+  },
+  "type": "automata"
+}
