@@ -62,11 +62,11 @@ states:
         type: IM
         user_input: true
     outputs:
-      context.is_correct: '{{context.reply == context.correct_answer}}'
+      context.reply: '{{reply}}'
       context.one: 'str({{context.reply}}) == str({{context.correct_answer}})'
+      context.is_correct: '{{context.reply == context.correct_answer}}'
       context.your_answer: '{{user_prompt}}'
       context.memory: '{{user_prompt}}'
-      context.reply: '{{reply}}'
     tasks:
     - module_config:
         #memory: '{{context.memory}}'
