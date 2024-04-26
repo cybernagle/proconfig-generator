@@ -63,7 +63,9 @@ states:
         user_input: true
     outputs:
       context.reply: '{{reply}}'
-      context.one: 'str({{context.reply}}) == str({{context.correct_answer}})'
+      # context.one: '{{"str(" + String(context.reply) + " == " + str(context.correct_answer) + ")" }}'
+      # context.one: '"str(" {{String(context.reply)}} ") == str(" {{context.correct_answer}} ")" '
+      context.one: '{{contex.reply}} == {{context.correct_answer}}'
       context.is_correct: '{{context.reply == context.correct_answer}}'
       context.your_answer: '{{user_prompt}}'
       context.memory: '{{user_prompt}}'
@@ -137,7 +139,7 @@ states:
       - content: Continue
         description: continue play
         on_click: continue
-      text: 'Oh No! Your input is: {{context.your_answer}},
+      text: 'Oh No! Your input is: `{{context.your_answer}}`,
         \n LLM generated: `{{context.reply}}`, which not meet the requirments.
         \n we expect: `{{context.correct_answer}}`
         \n correctness: `{{context.is_correct}}`
