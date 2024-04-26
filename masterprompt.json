@@ -5,6 +5,7 @@
     "correct_count": "",
     "your_answer": "",
     "reply": "",
+    "one": "",
     "is_correct": "{{false}}",
     "questions": [
       {
@@ -111,7 +112,9 @@
             "system_prompt": "Execute the following pseudocode and provide the result without any further explaination:",
             "user_prompt": "{{context.one}}",
             "widget_id": "1744214047475109888"
-          }
+          },
+          "module_type": "AnyWidgetModule",
+          "name": "judge_by_gpt"
         }
       ],
       "transitions": {
@@ -159,7 +162,7 @@
             "on_click": "continue"
           }
         ],
-        "text": "Oh No! Your input is: {{context.your_answer}}, \n LLM generated: `{{context.reply}}`, which not meet the requirments. \n we expect: `{{context.correct_answer}}` \n correctness: `{{context.is_correct}}` \n Click Continue or type anything to try again."
+        "text": "Oh No! Your input is: {{context.your_answer}}, \n LLM generated: `{{context.reply}}`, which not meet the requirments. \n we expect: `{{context.correct_answer}}` \n correctness: `{{context.is_correct}}` \n pesudocode: `{{context.one}}` \n Click Continue or type anything to try again."
       },
       "transitions": {
         "CHAT": "question_state"

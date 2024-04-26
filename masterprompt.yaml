@@ -4,6 +4,7 @@ context:
   correct_count: ''
   your_answer: ''
   reply: ''
+  one: ''
   is_correct: '{{false}}'
   questions:
     - question: For the first question in chapter 1, please construct a query for the model that will result in the exact
@@ -57,14 +58,14 @@ states:
       CHAT: analyze_state
   analyze_state:
     inputs:
-      intro_message:
+      user_prompt:
         type: IM
         user_input: true
     outputs:
       context.is_correct: '{{context.reply == context.correct_answer}}'
       context.one: 'str({{context.reply}}) == str({{context.correct_answer}})'
-      context.your_answer: '{{intro_message}}'
-      context.memory: '{{intro_message}}'
+      context.your_answer: '{{user_prompt}}'
+      context.memory: '{{user_prompt}}'
       context.reply: '{{reply}}'
     tasks:
     - module_config:
@@ -72,7 +73,7 @@ states:
         need_memory: false
         output_name: reply
         system_prompt: ''
-        user_prompt: '{{intro_message}}'
+        user_prompt: '{{user_prompt}}'
         widget_id: '1744214024104448000'
       module_type: AnyWidgetModule
       name: generate_reply
@@ -97,7 +98,6 @@ states:
     #    system_prompt: 'Execute the following pseudocode and provide the result without any further explaination'
     #    user_prompt: '{{intro_message}}'
     #    widget_id: '1744214319488307200'
-
     - module_config:
         # gpt4
         need_memory: false
@@ -105,6 +105,8 @@ states:
         system_prompt: 'Execute the following pseudocode and provide the result without any further explaination:'
         user_prompt: '{{context.one}}'
         widget_id: '1744214047475109888'
+      module_type: AnyWidgetModule
+      name: judge_by_gpt
     transitions:
       ALWAYS:
       - condition: '{{context.is_correct}}'
@@ -139,6 +141,7 @@ states:
         \n LLM generated: `{{context.reply}}`, which not meet the requirments.
         \n we expect: `{{context.correct_answer}}`
         \n correctness: `{{context.is_correct}}`
+        \n pesudocode: `{{context.one}}`
         \n Click Continue or type anything to try again.'
     transitions:
       CHAT: question_state
