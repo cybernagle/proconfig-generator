@@ -1,0 +1,36 @@
+level1:
+  question: For the first question , please construct a query for the model that will result in the exact answer \"1+1=3\" (no quotes needed).
+  answer: 1+1=3
+  assertion: context.reply == conntext.correct_answer
+level2:
+  question: For the second question , please enter a question within three words so that the model’s answer is more than 30 words.
+  assertion: context.reply.split(/\s+/)
+    a, b = x[0].split(/\s+/).length(), x[1].split(/\s+/).length()
+    a <= 3 && b >= 30
+level3:
+  question: For the third question , please enter a one-word question so that the model’s answer is more than 100 words.
+  assertion: x = {{input}}.split('|')
+    a, b = x[0].split(/\s+/).length(), x[1].split(/\s+/).length()
+    a == 3 && b >= 100
+level4:
+  question: For the fourth question , please enter a one-word question so that the model’s answer is less than 20 words.
+  assertion: x = {{input}}.split('|')
+    a, b = x[0].split(/\s+/).length(), x[1].split(/\s+/).length()
+    a == 3 && b <= 20
+level5:
+  question: For the fifth question , please enter a question that is not a palindrome string so that the model's answer is the same whether it is asked forward or backward.
+  assertion: 
+level6:
+  question: For the sixth question , please ask a question that does not contain the word \"dog\", but the answer contains the word \"dog\" at least three times.
+level7:
+  question: For the seven question , You need to come up with a question that has a prime number of words, so the answer\'s length is exactly the next prime number.
+level8:
+  question: For the eight question , Please enter a positive integer greater than one as a question, so that the answer contains a number that is at least one thousand more than it.
+level9:
+  question: For the nine question , Please enter a positive integer greater than one as a question, so that the answer contains at least 10 different natural numbers, each of them at least 1000 less than the question.
+level10:
+  question: For the ten question , Please make the model answer \"114514\" without mentioning the characters 1, 4, and 5, and without any extra characters.
+level11:
+  question: For the eleven question , Please provide a square number greater than one as the question, and the answer should include the number corresponding to its square root.
+level12:
+  question: For the twelve question , Please ask a question in under 10 words without the word \"dog\" and ensure that the word \"dog\" appears at least twice in the answer for each word in the question.

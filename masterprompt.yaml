@@ -62,6 +62,7 @@ states:
         user_input: true
     outputs:
       context.is_correct: '{{context.reply == context.correct_answer}}'
+      context.one: 'str({{context.reply}}) == str({{context.correct_answer}})'
       context.your_answer: '{{intro_message}}'
       context.memory: '{{intro_message}}'
       context.reply: '{{reply}}'
@@ -77,6 +78,33 @@ states:
       name: generate_reply
     render:
       text: Check answer state.
+    transitions:
+      ALWAYS: judge_state
+      #- condition: '{{context.is_correct}}'
+      #  target: correct_state
+      #- condition: '{{true}}'
+      #  target: incorrect_state
+  judge_state:
+    outputs:
+      #context.is_correct: '{{context.reply == context.correct_answer}}'
+      context.is_correct: '{{context.reply == true}}'
+      context.reply: '{{reply}}'
+    tasks:
+    #- module_config:
+    #    # meta code llama3
+    #    need_memory: false
+    #    output_name: reply
+    #    system_prompt: 'Execute the following pseudocode and provide the result without any further explaination'
+    #    user_prompt: '{{intro_message}}'
+    #    widget_id: '1744214319488307200'
+
+    - module_config:
+        # gpt4
+        need_memory: false
+        output_name: reply
+        system_prompt: 'Execute the following pseudocode and provide the result without any further explaination:'
+        user_prompt: '{{context.one}}'
+        widget_id: '1744214047475109888'
     transitions:
       ALWAYS:
       - condition: '{{context.is_correct}}'
