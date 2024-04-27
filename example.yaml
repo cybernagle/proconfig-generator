@@ -1,0 +1,68 @@
+context:
+  reply: ''
+  one: ''
+id: prompt_playgroud
+initial: home_page_state
+inputs: {}
+outputs: {}
+states:
+  home_page_state:
+    inputs: {}
+    outputs: {}
+    render:
+      buttons:
+      - content: Start
+        description: Click to Start.
+        on_click: question_state
+      text: 'home'
+  question_state:
+    inputs:
+      user_message:
+        type: IM
+        user_input: true
+    outputs:
+      context.correct_answer: 'thisisanswer'
+    render:
+      buttons:
+      - content: Home
+        description: Click to Go Back to Home
+        on_click: go_home
+      text: 'this is first question'
+    transitions:
+      CHAT: analyze_state
+  analyze_state:
+    inputs:
+      user_prompt:
+        type: IM
+        user_input: true
+    outputs:
+      context.one: 'generate string -- {{contex.reply}} == {{context.correct_answer}}'
+    tasks:
+    - module_config:
+        need_memory: false
+        output_name: reply
+        system_prompt: ''
+        user_prompt: '{{user_prompt}}'
+        widget_id: '1744214024104448000'
+      module_type: AnyWidgetModule
+      name: generate_reply
+    render:
+      text: Check answer state.
+    transitions:
+      ALWAYS: judge_state
+  judge_state:
+    inputs: {}
+    outputs: {}
+    render:
+      buttons:
+      - content: Home
+        description: Click to Go Back to Home
+        on_click: go_home
+      text: 'context one is: {{context.one}}'
+    transitions:
+      CHAT: home_page_state
+transitions:
+  go_home: home_page_state
+  question_state: question_state
+  continue: question_state
+type: automata

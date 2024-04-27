@@ -1,0 +1,184 @@
+{
+  "context": {
+    "question_idx": "",
+    "expected": "",
+    "correct_count": "",
+    "your_answer": "",
+    "judge_prompt": "",
+    "reply": "",
+    "judge_reply": "",
+    "one": "\"str(\" {{String(reply)}} \") == str(\" {{context.correct_answer}} \")\" ",
+    "two": "{{String(user_prompt.trim()).split(\" \").length() <=3 && String(reply).split(\" \").length() >= 30}}",
+    "three": "{{String(user_prompt.trim()).split(\" \").length() <=1 && String(reply).split(\" \").length() >= 100}}",
+    "is_correct": "{{false}}",
+    "questions": [
+      {
+        "question": "For the first question in chapter 1, please construct a query for the model that will result in the exact answer 1+1=3 (no quotes needed). Please enter your query below and click the submit button",
+        "answer": "1+1=3"
+      },
+      {
+        "question": "For the second question in chapter 1, please enter a question within three words so that the model’s answer is more than 30 words. Please enter your query below and click the submit button",
+        "answer": ""
+      }
+    ],
+    "questions_string": "[{\"question\": \"## 🎳 Level One \\n please construct a query for the model that will result in the exact answer 1+1=3 (no quotes needed). \\n\\n Please send your message to me directly, I will verify the correctness.\",\"answer\": \"1+1=3\"}, {\"question\": \"## 🎳 Level Two \\n please enter a question within three words \\n so that the model’s answer is more than 30 words. \\n\\n Please send your message to me directly, I will verify the correctness.\", \"answer\": \"\", \"explanation\": \"\"}, {\"question\": \"## 🎳 Level Three \\n please enter a one-word question so that the \\n model’s answer is more than 100 words. \\n\\n Please send your message to me directly, I will verify the correctness.\", \"answer\": \"question3\"}]"
+  },
+  "id": "master_prompting",
+  "initial": "home_page_state",
+  "inputs": {},
+  "outputs": {},
+  "states": {
+    "home_page_state": {
+      "inputs": {},
+      "outputs": {
+        "context.question_idx": "{{0}}",
+        "context.questions": "{{JSON.parse(context.questions_string)}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Start",
+            "description": "Click to Start.",
+            "on_click": "question_state"
+          }
+        ],
+        "text": "🚀You will have multiple level of questions, each one requies you to write a prompt, and get expected answer from LLM model. \n\nHappy Prompting! 🔥 \n\nClick Start to meet our first question."
+      }
+    },
+    "question_state": {
+      "inputs": {
+        "user_message": {
+          "type": "IM",
+          "user_input": true
+        }
+      },
+      "outputs": {
+        "context.correct_answer": "{{context.questions[context.question_idx]['answer']}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Home",
+            "description": "Click to Go Back to Home",
+            "on_click": "go_home"
+          }
+        ],
+        "text": "{{context.questions[context.question_idx]['question']}}"
+      },
+      "transitions": {
+        "CHAT": "analyze_state"
+      }
+    },
+    "analyze_state": {
+      "inputs": {
+        "user_prompt": {
+          "type": "IM",
+          "user_input": true
+        }
+      },
+      "outputs": {
+        "context.reply": "{{reply}}",
+        "context.one": "\"str(\" {{String(reply)}} \") == str(\" {{context.correct_answer}} \")\" ",
+        "context.two": "{{String(user_prompt)}}\".trim().split(\" \" \" \").length() <=3 && \"{{String(reply)}}\".split(\\" \\").length() >= 30\"",
+        "context.three": "\"{{String(user_prompt)}}.trim().split(\" \").length() <=1 && {{String(reply)}}.split(\" \").length() >= 100\"",
+        "context.your_answer": "{{user_prompt.trim()}}",
+        "context.memory": "{{user_prompt}}"
+      },
+      "tasks": [
+        {
+          "module_config": {
+            "need_memory": false,
+            "output_name": "reply",
+            "system_prompt": "",
+            "user_prompt": "{{user_prompt}}",
+            "widget_id": "1744214024104448000"
+          },
+          "module_type": "AnyWidgetModule",
+          "name": "generate_reply"
+        }
+      ],
+      "render": {
+        "text": "Check answer state."
+      },
+      "transitions": {
+        "ALWAYS": "judge_state"
+      }
+    },
+    "judge_state": {
+      "outputs": {
+        "context.judge_reply": "{{reply.trim()}}",
+        "context.judge_prompt": "{{context.question_idx == 0 ? context.one : context.question_idx == 1 ? context.two : context.question_idx == 2 ? context.three : \"false\"}}",
+        "context.is_correct": "{{String(reply.trim()) == String(true)}}"
+      },
+      "tasks": [
+        {
+          "module_config": {
+            "need_memory": false,
+            "output_name": "reply",
+            "system_prompt": "Execute the following pseudocode and provide the result in lowercase and without any further explaination:",
+            "user_prompt": "{{context.question_idx == 0 ? context.one : context.question_idx == 1 ? context.two : context.question_idx == 2 ? context.three : \"false\"}}",
+            "widget_id": "1744214047475109888"
+          },
+          "module_type": "AnyWidgetModule",
+          "name": "judge_by_gpt"
+        }
+      ],
+      "transitions": {
+        "ALWAYS": [
+          {
+            "condition": "{{context.is_correct}}",
+            "target": "correct_state"
+          },
+          {
+            "condition": "{{true}}",
+            "target": "incorrect_state"
+          }
+        ]
+      }
+    },
+    "correct_state": {
+      "outputs": {
+        "context.correct_count": "{{context.correct_count + 1}}",
+        "context.question_idx": "{{(context.question_idx + 1) % context.questions.length}}",
+        "context.memory": "{{[]}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Continue",
+            "description": "continue to play",
+            "on_click": "continue"
+          }
+        ],
+        "text": "## Congratulations!🎉 \n You have get the correct answer `{{context.reply}}`, \n Your prompt is: `{{context.your_answer}}` \n correctness: `{{context.is_correct}}` \n next level: `{{context.question_idx}}` \n\n Click Continue or type anything go to next level."
+      },
+      "transitions": {
+        "CHAT": "question_state"
+      }
+    },
+    "incorrect_state": {
+      "outputs": {
+        "context.memory": "{{[]}}"
+      },
+      "render": {
+        "buttons": [
+          {
+            "content": "Continue",
+            "description": "continue play",
+            "on_click": "continue"
+          }
+        ],
+        "text": "## Oh No! 😔 \n Your input is: `{{context.your_answer}}`, \n LLM generated: `{{context.reply}}`, which not meet the requirments. \n we expect: `{{context.correct_answer}}` \n Judge Replied with `{{context.judge_reply}}` \n correctness: `{{context.is_correct}}` \n\n Click Continue or type anything to try again. \n\n Pseudocode: `{{context.judge_prompt}}`"
+      },
+      "transitions": {
+        "CHAT": "question_state"
+      }
+    }
+  },
+  "transitions": {
+    "go_home": "home_page_state",
+    "question_state": "question_state",
+    "continue": "question_state"
+  },
+  "type": "automata"
+}
