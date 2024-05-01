@@ -82,8 +82,8 @@ states:
     outputs:
       context.reply: '{{reply}}'
       context.one: '"str(" {{String(reply).trim()}} ") == str(" {{context.correct_answer}} ")" '
-      context.two: '"{{String(user_prompt).trim()}}".trim().split(" ").length() <=3 && "{{String(reply)}}".trim().split(" ").length() >= 30"'
-      context.three: '"{{String(user_prompt).trim()}}".trim().split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
+      context.two: '"{{String(user_prompt).trim()}}".split(" ").length() <=3 && "{{String(reply)}}".trim().split(" ").length() >= 30"'
+      context.three: '"{{String(user_prompt).trim()}}".split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
       context.your_answer: '{{user_prompt.trim()}}'
       context.memory: '{{user_prompt}}'
     tasks:
@@ -111,7 +111,7 @@ states:
     - module_config:
         need_memory: false
         output_name: reply
-        system_prompt: 'Please execute the following pseudocode and provide the result in lowercase and without any further explaination exactly:'
+        system_prompt: 'Please execute the following pseudocode and provide the result in lowercase and without any further explaination :'
         user_prompt: '{{context.question_idx == 0 ? context.one :
           context.question_idx == 1 ? context.two :
           context.question_idx == 2 ? context.three :
@@ -162,6 +162,7 @@ states:
         \n we expect: `{{context.correct_answer}}`
         \n Judge Replied with `{{context.judge_reply}}`
         \n correctness: `{{context.is_correct}}`
+        \n context.correct_count: `{{context.correct_count}}`
         \n current level: `{{context.question_idx + 1}}`
         \n\n Click Continue or type anything to try again.
         \n\n Pseudocode: `{{context.judge_prompt}}`'
