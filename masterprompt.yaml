@@ -1,12 +1,12 @@
 context:
   question_idx: ''
   expected: ''
-  correct_count: 0
+  correct_count: '{{0}}'
   your_answer: ''
   judge_prompt: ''
-  one: '"str(" {{String(reply)}} ") == str(" {{context.correct_answer}} ")" '
-  two: '"{{String(user_prompt)}}".trim().split(" ").length() <=3 && "{{String(reply)}}".trim().split(" ").length() >= 30"'
-  three: '"{{String(user_prompt)}}".trim().split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
+  one: ''
+  two: ''
+  three: '' # "{{String(user_prompt)}}".trim().split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
   reply: ''
   judge_reply: ''
   #one: '"str(" {{String(reply)}} ") == str(" {{context.correct_answer}} ")" '
@@ -71,6 +71,9 @@ states:
       - content: Home
         description: Click to Go Back to Home
         on_click: go_home
+      - content: Chat
+        description: Go to free chat mod
+        on_click: chat_state
       text: '{{context.questions[context.question_idx][''question'']}}'
     transitions:
       CHAT: analyze_state
@@ -82,8 +85,8 @@ states:
     outputs:
       context.reply: '{{reply}}'
       context.one: '"str(" {{String(reply).trim()}} ") == str(" {{context.correct_answer}} ")" '
-      context.two: '"{{String(user_prompt).trim()}}".split(" ").length() <=3 && "{{String(reply)}}".trim().split(" ").length() >= 30"'
-      context.three: '"{{String(user_prompt).trim()}}".split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
+      context.two: '"{{String(user_prompt).trim()}}".split(" ").length() <=3 && "{{String(reply)}}".trim().split(" ").length() >= 30'
+      context.three: '"{{String(user_prompt).trim()}}".split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100'
       context.your_answer: '{{user_prompt.trim()}}'
       context.memory: '{{user_prompt}}'
     tasks:
@@ -117,9 +120,9 @@ states:
           context.question_idx == 2 ? context.three :
             "false"}}'
         # gpt4
-        widget_id: '1744214047475109888'
+        # widget_id: '1744214047475109888'
         # gpt3.5
-        #widget_id: '1744214024104448000'
+        widget_id: '1744214024104448000'
       module_type: AnyWidgetModule
       name: judge_by_gpt
     transitions:
@@ -138,6 +141,9 @@ states:
       - content: Continue
         description: continue to play
         on_click: continue
+      - content: Chat
+        description: Go to free chat mod
+        on_click: chat_state
       text: '## {{context.questions[context.question_idx][''congrats'']}}
         \n You have get the correct answer.
         \n `{{context.reply}}`,
@@ -156,6 +162,9 @@ states:
       - content: Continue
         description: continue play
         on_click: continue
+      - content: Chat
+        description: Go to free chat mod
+        on_click: chat_state
       text: '## {{context.questions[context.question_idx][''encourage'']}}
         \n Your input is: `{{context.your_answer}}`,
         \n LLM generated: `{{context.reply}}`, which not meet the requirments.
@@ -187,11 +196,10 @@ states:
     transitions:
       CHAT: chat_page_state
   award_state:
+    outputs:
+      context.memory: '{{[]}}'
+      context.correct_count: '{{0}}'
     render:
-      buttons:
-      - content: Continue
-        description: continue to play
-        on_click: continue
       text: '## You did it! Youve conquered this game and emerged victorious. 🎊👑
         \n\n Now you can continue playaround with the AI world. you can do it!'
     transitions:
@@ -203,10 +211,10 @@ states:
         user_input: true
     outputs: {}
     render:
-      buttons:
-      - content: Home
-        description: Click to Go Back to Home.
-        on_click: go_home
+      #buttons:
+      #- content: Home
+      #  description: Click to Go Back to Home.
+      #  on_click: go_home
       text: '{{chatreply}}'
     tasks:
     - module_config:
@@ -219,10 +227,12 @@ states:
       name: generate_reply
     transitions:
       CHAT: chat_page_state
+  #!include: state
 transitions:
   go_home: home_page_state
   question_state: question_state
   continue: continue_state
+  chat_state: chat_page_state
 type: automata
 #properties:
 #  cache: true

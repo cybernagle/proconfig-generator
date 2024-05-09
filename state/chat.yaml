@@ -1,0 +1,23 @@
+chat_page_state:
+  inputs:
+    user_message:
+      type: IM
+      user_input: true
+  outputs: {}
+  render:
+    #buttons:
+    #- content: Home
+    #  description: Click to Go Back to Home.
+    #  on_click: go_home
+    text: '{{chatreply}}'
+  tasks:
+  - module_config:
+      memory: '{{context.memory}}'
+      output_name: chatreply
+      system_prompt: ''
+      user_prompt: '{{user_message}}'
+      widget_id: '1744214024104448000'
+    module_type: AnyWidgetModule
+    name: generate_reply
+  transitions:
+    CHAT: chat_page_state

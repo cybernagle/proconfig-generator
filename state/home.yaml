@@ -1,0 +1,14 @@
+home_page_state:
+  inputs: {}
+  outputs:
+    context.question_idx: '{{0}}'
+    context.questions: '{{JSON.parse(context.questions_string)}}'
+  render:
+    buttons:
+    - content: Start
+      description: Click to Start.
+      on_click: question_state
+    text: '🚀You will have multiple level of questions, each one requies you to write a prompt, and get expected answer from LLM model.
+      \n\nHappy Prompting! 🔥 \n\nClick Start to meet our first question.'
+  transitions:
+    CHAT: question_state

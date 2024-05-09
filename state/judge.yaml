@@ -1,0 +1,29 @@
+judge_state:
+  outputs:
+    context.judge_reply: '{{reply.trim()}}'
+    context.judge_prompt: '{{context.question_idx == 0 ? context.one :
+        context.question_idx == 1 ? context.two :
+        context.question_idx == 2 ? context.three :
+          "false"}}'
+    context.is_correct: '{{String(reply.trim()) == String(true)}}'
+  tasks:
+  - module_config:
+      need_memory: false
+      output_name: reply
+      system_prompt: 'Please execute the following pseudocode and provide the result in lowercase and without any further explaination :'
+      user_prompt: '{{context.question_idx == 0 ? context.one :
+        context.question_idx == 1 ? context.two :
+        context.question_idx == 2 ? context.three :
+          "false"}}'
+      # gpt4
+      # widget_id: '1744214047475109888'
+      # gpt3.5
+      widget_id: '1744214024104448000'
+    module_type: AnyWidgetModule
+    name: judge_by_gpt
+  transitions:
+    ALWAYS:
+    - condition: '{{context.is_correct}}'
+      target: correct_state
+    - condition: '{{true}}'
+      target: incorrect_state
