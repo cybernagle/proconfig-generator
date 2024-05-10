@@ -5,10 +5,14 @@ import json
 import yaml
 import click
 
+from tabulate import tabulate
+from termcolor import colored
+
 # class to implement a custom YAML loader
 class Loader(yaml.SafeLoader):
     def __init__(self, stream):
         self._root = os.path.split(stream.name)[0]
+        self._state = []
         super(Loader, self).__init__(stream)
 
     def include(self, node):
@@ -24,14 +28,50 @@ class Loader(yaml.SafeLoader):
                 with open(file_path, 'r') as f:
                     # 合并YAML文件内容
                     file_data = yaml.load(f, Loader=yaml.FullLoader)
-                    if isinstance(file_data, dict):
+                    if isinstance(file_data, dict) and file_data:
                         data.update(file_data)
+                        second_level = file_data[list(file_data.keys())[0]]
+                        colored_data = self.check_fields(second_level)
+                        self._state += colored_data
                     elif isinstance(file_data, list):
                         data[filename] = file_data
-
         return data
 
+    def code(self, node):
+        file_path = self.construct_scalar(node)
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"File {file_path} not found")
+
+        # 如果是 YAML 文件，合并内容
+        if file_path.endswith('.js'):
+            with open(file_path, 'r') as f:
+                return f.read()
+
+    def check_fields(self, yaml_data):
+        fields = ['inputs', 'outputs', 'transitions', 'render', 'tasks']
+        result = []
+        for field in fields:
+            if field in yaml_data:
+                result.append([field, colored('Yes', 'green')])
+            else:
+                result.append([field, colored('No', 'red')])
+        return result
+
+    #@staticmethod
+    def print_table(self, data):
+        headers = ['Field', 'Exists']
+        print(tabulate(data, headers, tablefmt='grid'))
+
+    def __del__(self):
+        if self._state:
+            transposed_data = list(zip(*self._state))
+            #print(transposed_data)
+            self.print_table(transposed_data)
+            #self.print_table(self._state)
+
+
 Loader.add_constructor('!include', Loader.include)
+Loader.add_constructor('!code', Loader.code)
 
 @click.group()
 def cli():

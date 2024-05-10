@@ -5,10 +5,6 @@ chat_page_state:
       user_input: true
   outputs: {}
   render:
-    #buttons:
-    #- content: Home
-    #  description: Click to Go Back to Home.
-    #  on_click: go_home
     text: '{{chatreply}}'
   tasks:
   - module_config:
