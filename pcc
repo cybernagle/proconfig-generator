@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import json
@@ -26,12 +26,13 @@ class Loader(yaml.SafeLoader):
             if filename.endswith('.yaml') or filename.endswith('.yml'):
                 file_path = os.path.join(full_directory_path, filename)
                 with open(file_path, 'r') as f:
-                    # 合并YAML文件内容
+                    # 合并yaml文件内容
                     file_data = yaml.load(f, Loader=yaml.FullLoader)
                     if isinstance(file_data, dict) and file_data:
                         data.update(file_data)
                         second_level = file_data[list(file_data.keys())[0]]
                         colored_data = self.check_fields(second_level)
+                        self._state += [["State Name", colored(filename, 'blue')]]
                         self._state += colored_data
                     elif isinstance(file_data, list):
                         data[filename] = file_data
@@ -59,16 +60,16 @@ class Loader(yaml.SafeLoader):
 
     #@staticmethod
     def print_table(self, data):
-        headers = ['Field', 'Exists']
+        #headers = ['Field', 'Exists']
+        headers = []
         print(tabulate(data, headers, tablefmt='grid'))
 
     def __del__(self):
         if self._state:
-            transposed_data = list(zip(*self._state))
-            #print(transposed_data)
-            self.print_table(transposed_data)
-            #self.print_table(self._state)
-
+            # transposed_data = list(zip(*self._state))
+            # print(transposed_data)
+            # self.print_table(transposed_data)
+            self.print_table(self._state)
 
 Loader.add_constructor('!include', Loader.include)
 Loader.add_constructor('!code', Loader.code)
