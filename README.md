@@ -35,6 +35,9 @@ This project is released under the MIT License.
 
 ## Ad
 
-A llm riddle challenge game implementation on $myshell, if you like this project , please participate with my Master Prompting Bot, Thanks a lot!
+A llm riddle challenge game implementation on $myshell is based on this generator, if you like this project , please participate with my [Master Prompting Bot](https://app.myshell.ai/bot/Bz6Rbu/1713262101), Thanks a lot!
+
+
+below is the state machine you may find interesting :)
 
 ![statemachine](./img/statemachine.png)

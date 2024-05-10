@@ -32,3 +32,7 @@ pip install -r requirments.txt
 
 ## 许可证
 该项目根据 MIT 许可证发布。
+
+## 广告
+
+我的 bot [master prompting](https://app.myshell.ai/bot/Bz6Rbu/1713262101) 就是使用的本 generator 来生成, 如果你觉得有帮助到你的话, 请帮我交互一下 bot, 贡献一些积分,提一点 bug. 感恩的心 ❤️
