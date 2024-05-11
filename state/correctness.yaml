@@ -18,6 +18,8 @@ correct_state:
       \n correctness: `{{context.is_correct}}`
       \n context.correct_count: `{{context.correct_count}}`
       \n next level: `{{context.question_idx + 1}}`
+
+      \n\n Judge Replied with `{{context.judge_reply}}`
       \n\n Click Continue or type anything go to next level.'
   transitions:
     CHAT: continue_state
@@ -40,7 +42,6 @@ incorrect_state:
       \n correctness: `{{context.is_correct}}`
       \n context.correct_count: `{{context.correct_count}}`
       \n current level: `{{context.question_idx + 1}}`
-      \n\n Click Continue or type anything to try again.
-      \n\n Pseudocode: `{{context.judge_prompt}}`'
+      \n\n Click Continue or type anything to try again.'
   transitions:
     CHAT: continue_state

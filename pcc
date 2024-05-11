@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import json
 import yaml
 import click
@@ -38,15 +39,14 @@ class Loader(yaml.SafeLoader):
                         data[filename] = file_data
         return data
 
-    def code(self, node):
+    def oneline(self, node):
         file_path = self.construct_scalar(node)
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File {file_path} not found")
 
         # 如果是 YAML 文件，合并内容
-        if file_path.endswith('.js'):
-            with open(file_path, 'r') as f:
-                return f.read()
+        with open(file_path, 'r') as f:
+            return f.read()#.replace('\\n', '\n')
 
     def check_fields(self, yaml_data):
         fields = ['inputs', 'outputs', 'transitions', 'render', 'tasks']
@@ -62,7 +62,7 @@ class Loader(yaml.SafeLoader):
     def print_table(self, data):
         #headers = ['Field', 'Exists']
         headers = []
-        print(tabulate(data, headers, tablefmt='grid'))
+        print(tabulate(data, headers, tablefmt='grid'), file=sys.stderr)
 
     def __del__(self):
         if self._state:
@@ -72,7 +72,7 @@ class Loader(yaml.SafeLoader):
             self.print_table(self._state)
 
 Loader.add_constructor('!include', Loader.include)
-Loader.add_constructor('!code', Loader.code)
+Loader.add_constructor('!oneline', Loader.oneline)
 
 @click.group()
 def cli():

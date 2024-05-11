@@ -2,7 +2,7 @@ function main(params) {
     const {user, system} = params;
     var cUser = countText(user);
     var cSystem = countText(system);
-    return user <= 3 && system >= 30
+    return cUser <= 3 && cSystem >= 30
 }
 
 function countText(text) {
@@ -12,5 +12,5 @@ function countText(text) {
     const chineseCount = (text.match(regexChinese) || []).length;
     const englishCount = (text.match(regexEnglish) || []).length;
 
-    return { chineseCount, englishCount };
+    return chineseCount + englishCount;
 }

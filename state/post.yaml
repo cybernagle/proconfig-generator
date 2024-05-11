@@ -3,7 +3,7 @@ continue_state:
     text: Click to Next Question
   transitions:
     ALWAYS:
-    - condition: '{{context.question_idx > 0}}'
+    - condition: '{{context.question_idx >= 0}}'
       target: question_state
     - condition: '{{context.correct_count >= 3}}'
       target: award_state

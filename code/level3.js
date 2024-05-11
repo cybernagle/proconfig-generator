@@ -12,5 +12,5 @@ function countText(text) {
     const chineseCount = (text.match(regexChinese) || []).length;
     const englishCount = (text.match(regexEnglish) || []).length;
 
-    return { chineseCount, englishCount };
+    return chineseCount+englishCount;
 }

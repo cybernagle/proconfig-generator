@@ -1,14 +1,15 @@
 judge_state:
   outputs:
-    context.judge_reply: '{{reply.trim()}}'
+    context.judge_reply: '{{result}}'
     context.judge_prompt: '{{context.question_idx == 0 ? context.l1 :
         context.question_idx == 1 ? context.l2 :
         context.question_idx == 2 ? context.l3 :
           "false"}}'
-    context.is_correct: '{{String(reply.trim()) == String(true)}}'
+    #context.is_correct: '{{String(result.trim()) == String(true)}}'
+    context.is_correct: '{{result}}'
   tasks:
   - module_config:
-      output_name: reply
+      #output_name: reply
       need_memory: false
       # system_prompt: 'Please execute the following pseudocode
       # and provide the result in lowercase and without any further explaination :'
@@ -23,13 +24,14 @@ judge_state:
       # code runner widget
       widget_id: "1751859390353202447"
       params:
-        user: "{{1}}"
-        system: "{{2}}"
+        user: '{{context.your_answer}}'
+        system: '{{context.reply}}'
       code: '{{context.question_idx == 0 ? context.l1 :
         context.question_idx == 1 ? context.l2 :
         context.question_idx == 2 ? context.l3 : "false"}}'
+      output_name: result
     module_type: AnyWidgetModule
-    name: judge_by_gpt
+    name: judge_by_code_runner
   transitions:
     ALWAYS:
     - condition: '{{context.is_correct}}'
