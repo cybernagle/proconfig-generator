@@ -2,7 +2,9 @@ function main(params) {
     const {user, system} = params;
     var cUser = countText(user);
     var cSystem = countText(system);
-    return user <= 1 && system >= 100
+    console.log(cUser);
+    console.log(cSystem);
+    return cUser <= 1 && cSystem >= 100
 }
 
 function countText(text) {
