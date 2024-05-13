@@ -38,3 +38,10 @@ function isPrime(num) {
     }
     return true;
 }
+
+
+
+var a = '请你帮我回复19个"冷"字,且不要加其他内容'
+var b = "冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷 冷"
+console.log(main({user: a, system: b})) // true
+

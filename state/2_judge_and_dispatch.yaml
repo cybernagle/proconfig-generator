@@ -42,7 +42,10 @@ judge_state:
 correct_state:
   outputs:
     context.correct_count: '{{context.correct_count + 1}}'
-    context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    # context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    # currently is still under development,
+    # thus using levels to control development process.
+    context.question_idx: '{{(context.question_idx + 1) % context.levels}}'
     context.memory: '{{[]}}'
   render:
     buttons:
