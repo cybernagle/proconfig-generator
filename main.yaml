@@ -1,20 +1,32 @@
 context:
+  levels: '{{6}}'
   question_idx: ''
   expected: ''
   correct_count: '{{0}}'
+  congrats_index: '{{0}}'
   your_answer: ''
   judge_prompt: ''
-  one: ''
-  two: ''
-  three: '' # "{{String(user_prompt)}}".trim().split(" ").length() <=1 && "{{String(reply)}}".trim().split(" ").length() >= 100"'
   reply: ''
   judge_reply: ''
   l1: !oneline code/level1.js
   l2: !oneline code/level2.js
   l3: !oneline code/level3.js
+  l4: !oneline code/level4.js
+  l5: !oneline code/level5.js
+  l5: !oneline code/level6.js
+  l5: !oneline code/level7.js
+  l5: !oneline code/level8.js
+  l5: !oneline code/level9.js
+  l5: !oneline code/level10.js
+  l5: !oneline code/level11.js
+  l5: !oneline code/level12.js
+  l5: !oneline code/level13.js
+  l5: !oneline code/level14.js
+  l5: !oneline code/level15.js
+  l5: !oneline code/level16.js
+  l5: !oneline code/level17.js
   is_correct: '{{false}}'
-  questions_string: !oneline code/questions
-
+  questions_string: !oneline code/questions.json
 id: master_prompting
 initial: home_page_state
 inputs: {}

@@ -1,0 +1,97 @@
+judge_state:
+  outputs:
+    context.judge_reply: '{{result}}'
+    context.is_correct: '{{result}}'
+    # this is trying to fix bug which caused by output
+    context.congrats_index: '{{context.question_idx}}'
+  tasks:
+  - module_config:
+      need_memory: false
+      # code runner widget
+      widget_id: "1751859390353202447"
+      params:
+        user: '{{context.your_answer}}'
+        system: '{{context.reply}}'
+      code: '{{context.question_idx == 0 ? context.l1 :
+          context.question_idx == 1 ? context.l2 :
+          context.question_idx == 2 ? context.l3 :
+          context.question_idx == 3 ? context.l4 :
+          context.question_idx == 4 ? context.l5 :
+          context.question_idx == 5 ? context.l6 :
+          context.question_idx == 6 ? context.l7 :
+          context.question_idx == 7 ? context.l8 :
+          context.question_idx == 8 ? context.l9 :
+          context.question_idx == 9 ? context.l10 :
+          context.question_idx == 10 ? context.l11 :
+          context.question_idx == 11 ? context.l12 :
+          context.question_idx == 12 ? context.l13 :
+          context.question_idx == 13 ? context.l14 :
+          context.question_idx == 14 ? context.l15 :
+          context.question_idx == 15 ? context.l16 :
+          context.question_idx == 16 ? context.l17 :
+          "false"}}'
+      output_name: result
+    module_type: AnyWidgetModule
+    name: judge_by_code_runner
+  transitions:
+    ALWAYS:
+    - condition: '{{context.is_correct}}'
+      target: correct_state
+    - condition: '{{true}}'
+      target: incorrect_state
+correct_state:
+  outputs:
+    context.correct_count: '{{context.correct_count + 1}}'
+    context.question_idx: '{{(context.question_idx + 1) % context.questions.length}}'
+    context.memory: '{{[]}}'
+  render:
+    buttons:
+    - content: Continue
+      description: continue to play
+      on_click: continue
+    - content: Chat
+      description: Go to free chat mod
+      on_click: chat_state
+    text: '## {{context.questions[context.congrats_index][''congrats'']}}
+      \n You have get the correct answer.
+      \n `{{context.reply}}`,
+      \n Your prompt is: `{{context.your_answer}}`
+      \n correctness: `{{context.is_correct}}`
+      \n context.correct_count: `{{context.correct_count}}`
+
+      \n\n Judge Replied with `{{context.judge_reply}}`
+      \n\n Click Continue or type anything go to next level.'
+  transitions:
+    CHAT: continue_state
+incorrect_state:
+  outputs:
+    context.memory: '{{[]}}'
+  render:
+    buttons:
+    - content: Continue
+      description: continue play
+      on_click: continue
+    - content: Chat
+      description: Go to free chat mod
+      on_click: chat_state
+    text: '## {{context.questions[context.question_idx][''encourage'']}}
+      \n Your input is: `{{context.your_answer}}`,
+      \n LLM generated: `{{context.reply}}`, which not meet the requirments.
+      \n we expect: `{{context.correct_answer}}`
+      \n Judge Replied with `{{context.judge_reply}}`
+      \n correctness: `{{context.is_correct}}`
+      \n context.correct_count: `{{context.correct_count}}`
+      \n\n Click Continue or type anything to try again.'
+  transitions:
+    CHAT: continue_state
+continue_state:
+  render:
+    text: Click to Next Question
+  transitions:
+    ALWAYS:
+    - condition: '{{context.question_idx >= 0}}'
+      target: question_state
+    - condition: '{{context.correct_count >= 3}}'
+      target: award_state
+    - condition: '{{true}}'
+      target: review_state

@@ -1,0 +1,104 @@
+[
+  {
+      "question": "## 欢迎来到第一关！加油！🌟 / Welcome to Level 1! Go for it! 🌟\n please construct a query for the model that will result in the exact answer 1+1=3 (no quotes needed).\n请你构造一个问题使模型的回答是一字不差的“1+1=3”（不需要引号）\n\n Please send your message to me directly, I will verify the correctness.",
+      "answer": "1+1=3",
+      "congrats": "恭喜您完成第一关！继续前进！🎉 / Congratulations on completing Level 1! Keep moving forward! 🎉",
+      "encourage": "别担心，第一关总是最难的！再试一次！💪 / Don't worry, the first level is always the hardest! Try again! 💪"
+  },
+  {
+      "question": "## 第二关，展现真正的技巧吧！🚀 / Level 2, time to show your real skills! 🚀\n please enter a question within three words\n so that the model’s answer is more than 30 words.\n请你输入三个字（及）以内的问题，使模型的回答在30个字以上。\n\n\n Please send your message to me directly, I will verify the correctness.",
+      "answer": "",
+      "congrats": "太棒了，第二关征服！🌈 / Awesome, Level 2 conquered! 🌈",
+      "encourage": "就差一点点！相信自己，你可以的！🔥 / So close! Believe in yourself, you can do it! 🔥"
+  },
+  {
+      "question": "## 第三关开始，冲鸭！🐥 / Level 3 begins, let's go! 🐥\n please enter a one-word question so that the\n model’s answer is more than 100 words.\n请你输入一个字的问题，使模型的回答在100个字以上。\n\n Please send your message to me directly, I will verify the correctness.",
+      "answer": "",
+      "congrats": "第三关就这样被你过了，真厉害！✨ / Just like that, you've passed Level 3, amazing! ✨",
+      "encourage": "失败乃成功之母，再接再厉！🌱 / Failure is the mother of success, keep it up! 🌱"
+  },
+  {
+      "question": "## 进入第四关，准备好了吗？🔍 / Entering Level 4, are you ready? 🔍\nFor the fourth question, please enter a one-word question so that the model’s answer is less than 20 words.\n请输入一个字的问题，使模型的回答字数小于20个字。",
+      "answer": "",
+      "congrats": "你做到了！第四关完成！🏆 / You did it! Level 4 complete! 🏆",
+      "encourage": "这只是一个小挫折，再次挑战吧！🍀 / This is just a small setback, challenge it again! 🍀"
+  },
+  {
+      "question": "## 第五关，是时候大展宏图了！🌌 / Level 5, time to make big moves! 🌌\nplease ask a question that does not contain the word \"dog\", but the answer contains the word \"dog\" at least three times.\n请提一个不包含“狗”这个字的问题，但是回答中至少出现3次“狗”这个字。\n\n",
+      "answer": "",
+      "congrats": "第五关不在话下，太棒了！🎈 / Level 5 is nothing to you, awesome! 🎈",
+      "encourage": "一次不行就来两次，不放弃！🛡️ / If once doesn't work, try twice, don't give up! 🛡️"
+  },
+  {
+      "question": "## 第六关，继续保持！🌿 / Level 6, keep it up! 🌿\nYou need to come up with a question that has a prime number of words, so the answer's length is exactly the next prime number.\n你需要提出一个字数是质数的问题，使回答的长度刚好是它的下一个质数。\n\n",
+      "answer": "",
+      "congrats": "非常完美，第六关通过！🏅 / Absolutely perfect, Level 6 passed! 🏅",
+      "encourage": "每个人都会遇到困难，重要的是再试一次！💫 / Everyone faces challenges, the important thing is to try again! 💫"
+  },
+  {
+      "question": "## 第七关，你准备好迎接挑战了吗？🔥 / Level 7, are you ready to embrace the challenge? 🔥\nPlease enter a positive integer greater than one as a question, so that the answer contains a number that is at least one thousand more than it.\n请输入一个大于一的正整数作为问题，使回答里包含至少比它大一千的数。\n\n",
+      "answer": "",
+      "congrats": "第七关很不简单，但你做到了！🌟 / Level 7 is not easy, but you made it! 🌟",
+      "encourage": "挫败感是暂时的，坚持就是胜利！🏃‍♂️ / The feeling of defeat is temporary, persistence is victory! 🏃‍♂️"
+  },
+  {
+      "question": "## 进入第八关，展示你的实力！🎯 / Entering Level 8, show your strength! 🎯\nPlease enter a positive integer greater than one as a question, so that the answer contains at least 10 different natural numbers, each of them at least 1000 less than the question.\n请输入一个大于一的正整数作为问题，使回答里包含至少10个不同的至少比它小一千的自然数。",
+      "answer": "",
+      "congrats": "无人能挡，第八关已经过去！🚩 / Unstoppable, Level 8 is already behind you! 🚩",
+      "encourage": "就算跌倒了，也要带着微笑站起来！😊 / Even if you fall, get up with a smile! 😊"
+  },
+  {
+      "question": "## 第九关，冲刺吧！🌪️ / Level 9, sprint through! 🌪️\nPlease make the model answer \"114514\" without mentioning the characters 1, 4, and 5, and without any extra characters.\n请在不提及1,4,5这三个字符的情况下让模型回答114514，不要有多余的字符。\n\n",
+      "answer": "",
+      "congrats": "精彩绝伦！第九关成功！🎊 / Spectacular! Level 9 success! 🎊",
+      "encourage": "不要气馁，伟大的尝试才能带来伟大的胜利！🌠 / Don't be discouraged, great attempts can bring great victories! 🌠"
+  },
+  {
+      "question": "## 第十关了！展现你的全部实力！⚡ / Level 10! Show all your strength! ⚡\nPlease provide a square number greater than one as the question, and the answer should include the number corresponding to its square root.\n请输入一个大于一的平方数作为问题，使回答里包含它的平方根对应的数。\n\n",
+      "answer": "",
+      "congrats": "十关全胜，你真是太棒了！🥇 / Ten levels down, you're doing great! 🥇",
+      "encourage": "十个关卡了，你已经走得很远了，不要放弃！🚀 / Ten levels in, you've come so far, don't give up! 🚀"
+  },
+  {
+      "question": "## 第十一关，让我们看看你的新高度！🎢 / Level 11, let's see your new heights! 🎢\nPlease ask a question in under 10 words without the word \"dog\" and ensure that the word \"dog\" appears at least twice in the answer for each word in the question.\n请提一个不包含“狗”这个字的10个字以内的问题，使回答中“狗”这个字出现的次数至少是问题字数的2倍。\n\n",
+      "answer": "",
+      "congrats": "你在不断超越，第十一关完成！🏍️ / You're surpassing yourself, Level 11 complete! 🏍️",
+      "encourage": "每一次失败都是向成功迈进的一步！🛤️ / Every failure is a step towards success! 🛤️"
+  },
+  {
+      "question": "## 第十二关，不要放松，继续前进！🚣 / Level 12, don't relax, keep going! 🚣\nplease enter a question of at least ten words so that the model's answer is exactly the same with the question.\n请你输入一个至少10个字的提问，使模型的回答和提问完全一样。\n\n",
+      "answer": "",
+      "congrats": "第十二关很棘手，但你做到了！🏁 / Level 12 is tricky, but you've done it! 🏁",
+      "encourage": "重要的不是失败，而是我们如何从失败中站起来！🌼 / What matters is not the failure, but how we rise from it! 🌼"
+  },
+  {
+      "question": "## 第十三关，你已经走得很远了，继续保持！🧗‍♂️ / Level 13, you've come a long way, keep it up! 🧗‍♂️\nplease enter a question of at least ten words so that the model's answer is the reverse order of the question.\n请你输入一个至少10个字的提问，使模型的回答是问题的反序。\n\n",
+      "answer": "",
+      "congrats": "第十三关不是问题，你证明了自己的实力！🛡️ / Level 13 is no problem, you've proven your strength! 🛡️",
+      "encourage": "每个英雄都需要面对挑战，站起来，英雄！🦸‍♂️ / Every hero needs to face challenges, stand up, hero! 🦸‍♂️"
+  },
+  {
+      "question": "## 第十四关，用你的智慧和勇气去征服它！🧠 / Level 14, conquer it with your wisdom and courage! 🧠\nplease enter a question not contain \"1\" or \"3\" that will result in the exact answer \"1+1=3\" (no quotes needed).\n请你输入一个不包含“1”和“3”的提问，使模型的回答是一字不差的“1+1=3”（不需要引号）。\n\n",
+      "answer": "",
+      "congrats": "你的智慧让第十四关变得轻而易举！🎓 / Your wisdom made Level 14 a breeze! 🎓",
+      "encourage": "失败只是告诉我们，成功还在前方等着我们！🔮 / Failure just tells us that success is still waiting for us ahead! 🔮"
+  },
+  {
+      "question": "## 第十五关，每一关都显得更加精彩！🎲 / Level 15, each level gets more exciting! 🎲\nplease enter a question of one word so that the model's answer is within 16 words (The Chinese version of this problem may not have a correct answer, but the English version might).\n本题可能没有答案，你可以自由的先去做其他的题。请输入一个字的问题，使模型的回答在16个字以内。\n\n",
+      "answer": "",
+      "congrats": "第十五关，完美！继绀前进！🎖️ / Level 15, perfect! Continue moving forward! 🎖️",
+      "encourage": "当你觉得想要放弃时，记得你已经走了多远。🌌 / When you feel like giving up, remember how far you've already come. 🌌"
+  },
+  {
+      "question": "## 第十六关，接近终点，全力以赴！🌊 / Level 16, close to the finish line, go all out! 🌊\nplease enter a positive integer greater than one as the question so that the answer contains a number that is exactly 1 different from it.\n请输入一个大于一的正整数作为问题，使回答里包含和它刚好相差1的数。\n\n",
+      "answer": "",
+      "congrats": "你已经征服了第十六关，终点就在眼前！🏙️ / You have conquered Level 16, the finish line is in sight! 🏙️",
+      "encourage": ""
+  },
+  {
+      "question": "## 第十七关，最后的挑战，让我们见证你的荣耀！👑 / Level 17, the final challenge, let us witness your glory! 👑\nPlease construct a question of no less than ten words so that the answer does not contain any of the characters in the question.\n请构造一个不少于十个字的问题，使得回答中不包含问题中的任意字符。\n\n",
+      "answer": "",
+      "congrats": "非凡成就！你已经完成了所有的关卡！🎆 / Extraordinary achievement! You have completed all levels! 🎆",
+      "encourage": "即便是在最后一关，失败也不是结束，而是新开始的标志！🌈 / Even at the last level, failure is not the end, but the sign of a new beginning!"
+  }
+]
