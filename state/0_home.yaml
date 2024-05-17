@@ -9,6 +9,7 @@ home_page_state:
       description: Click to Start.
       on_click: question_state
     text: '🚀You will have multiple level of questions, each one requies you to write a prompt, and get expected answer from LLM model.
+      前面有很多的关卡在等着您，每个关卡都需要您在对话框中输入提示词，目标是让 LLM 模型返回指定的内容。加油！
       \n\nHappy Prompting! 🔥 \n\nClick Start to meet our first question.'
   transitions:
     CHAT: question_state
