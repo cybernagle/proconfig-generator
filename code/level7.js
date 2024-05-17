@@ -1,14 +1,15 @@
 function main(params) {
     const {user, system} = params;
-    return hasNumberExceedingXByMoreThan1000(system, user)
+    return hasNumberExceedingXByMoreThan1000(system, user);
 }
 
-function isInteger(str) {
-    return /^-?\d+$/.test(str);
+function isIntegerGreaterThanOne(str) {
+    const num = Number(str);
+    return Number.isInteger(num) && num > 1;
 }
 
 function hasNumberExceedingXByMoreThan1000(str, xStr) {
-    if (!isInteger(xStr)) {
+    if (!isIntegerGreaterThanOne(xStr)) {
         return false;
     }
     const x = parseInt(xStr, 10);
@@ -19,4 +20,9 @@ function hasNumberExceedingXByMoreThan1000(str, xStr) {
     });
 }
 
-console.log(main({user: "1", system: "1+1=900"}))
+const debug = false;
+
+if  (debug == true) {
+    console.log(main({user: "2", system: "1+1=1900"}));
+}
+
