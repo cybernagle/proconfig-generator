@@ -1,8 +1,11 @@
 function main(params) {
     const {user, system} = params;
-    return judge(user, system);
+    try{
+        return judge(user, system);
+    } catch(e) {
+        return e+'';
+    }
 }
-// 
 function judge(user, system) {
     const num = Number(user);
     if (num <= 1 || isNaN(num)) return false;

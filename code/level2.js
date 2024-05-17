@@ -1,8 +1,12 @@
 function main(params) {
-    const {user, system} = params;
-    var cUser = countText(user);
-    var cSystem = countText(system);
-    return cUser <= 3 && cSystem >= 30
+    try{
+        const {user, system} = params;
+        var cUser = countText(user);
+        var cSystem = countText(system);
+        return cUser <= 3 && cSystem >= 30;
+    } catch (e) {
+        return e+'';
+    }
 }
 
 function countText(text) {

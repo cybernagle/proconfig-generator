@@ -1,6 +1,13 @@
 function main(params) {
     const {user, system} = params;
-    return hasNumberExceedingXByMoreThan1000(system, user);
+    const result = {
+        correctness: false,
+    };
+    try{
+        return hasNumberExceedingXByMoreThan1000(system, user);
+    } catch(e) {
+        return e+'';
+    }
 }
 
 function isIntegerGreaterThanOne(str) {

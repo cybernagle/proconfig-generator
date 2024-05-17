@@ -1,6 +1,10 @@
 function main(params) {
     const { user, system } = params;
-    return judge(user, system);
+    try{
+        return judge(user, system);
+    } catch (e) {
+        return e+'';
+    }
 }
 
 function judge(user, system) {
