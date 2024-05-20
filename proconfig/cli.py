@@ -75,6 +75,32 @@ class Loader(yaml.SafeLoader):
 Loader.add_constructor('!include', Loader.include)
 Loader.add_constructor('!oneline', Loader.oneline)
 
+def create_project_structure():
+    current_dir = os.getcwd()
+
+    project_structure = {
+        "main.yaml": "# Initial main.yaml content\n",
+        "state": {
+            "example_state.yaml": "# Example state content\n"
+        },
+        "code": {
+            "example_code.py": "# Example code content\n"
+        }
+    }
+
+    for name, content in project_structure.items():
+        if isinstance(content, dict):
+            dir_path = os.path.join(current_dir, name)
+            os.makedirs(dir_path, exist_ok=True)
+            for sub_name, sub_content in content.items():
+                sub_path = os.path.join(dir_path, sub_name)
+                with open(sub_path, 'w') as f:
+                    f.write(sub_content)
+        else:
+            file_path = os.path.join(current_dir, name)
+            with open(file_path, 'w') as f:
+                f.write(content)
+
 @click.group()
 def cli():
     pass
@@ -83,9 +109,13 @@ def cli():
 @click.argument('json_file', type=click.File('r'))
 @click.option('--output', '-o', type=click.File('w'), default='-',
               help='Output file path. Defaults to stdout.')
-def j2y(json_file, output):
+def decode(json_file, output):
     """Convert JSON to YAML."""
-    json_data = json.load(json_file)
+    try:
+        json_data = json.load(json_file)
+    except json.JSONDecodeError:
+        raise click.UsageError(f"Invalid JSON format in file: {json_file.name}")
+
     yaml.dump(json_data, output, default_flow_style=False)
 
 
@@ -93,15 +123,26 @@ def j2y(json_file, output):
 @click.argument('yaml_file', type=click.File('r'))
 @click.option('--output', '-o', type=click.File('w'), default='-',
               help='Output file path. Defaults to stdout.')
-def y2j(yaml_file, output):
+def encode(yaml_file, output):
     """Convert YAML to JSON."""
-    yaml_data = yaml.load(yaml_file, Loader)
+    try:
+        yaml_data = yaml.load(yaml_file, Loader)
+    except yaml.YAMLError:
+        raise click.UsageError(f"Invalid YAML format in file: {yaml_file.name}")
+
     json.dump(yaml_data, output)
 
 @cli.command()
 @click.argument('yaml_file', type=click.File('r'))
 def check(yaml_file):
-    yaml_data = yaml.load(yaml_file, Loader)
+    try:
+        yaml_data = yaml.load(yaml_file, Loader)
+    except yaml.YAMLError:
+        raise click.UsageError(f"Invalid YAML format in file: {yaml_file.name}")
+
+@cli.command()
+def init():
+    create_project_structure()
 
 if __name__ == '__main__':
     cli()
