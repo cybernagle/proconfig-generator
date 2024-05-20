@@ -9,6 +9,8 @@ import click
 from tabulate import tabulate
 from termcolor import colored
 
+from . import MAIN_YAML_CONTENT, HOME_PAGE_STATE_CONTENT, QUESTIONS_JSON_CONTENT, LEVEL1_JS_CONTENT
+
 # class to implement a custom YAML loader
 class Loader(yaml.SafeLoader):
     def __init__(self, stream):
@@ -147,6 +149,7 @@ def encode(yaml_file, output):
 @cli.command()
 @click.argument('yaml_file', type=click.File('r'))
 def check(yaml_file):
+    """Check the state for missing part."""
     try:
         yaml_data = yaml.load(yaml_file, Loader)
     except yaml.YAMLError:
@@ -154,6 +157,7 @@ def check(yaml_file):
 
 @cli.command()
 def init():
+    """Init a whole simple project."""
     create_project_structure()
 
 if __name__ == '__main__':
