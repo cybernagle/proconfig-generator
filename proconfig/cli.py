@@ -76,34 +76,46 @@ Loader.add_constructor('!include', Loader.include)
 Loader.add_constructor('!oneline', Loader.oneline)
 
 def create_project_structure():
+    """Initialize the project structure."""
     current_dir = os.getcwd()
 
-    project_structure = {
-        "main.yaml": "# Initial main.yaml content\n",
-        "state": {
-            "example_state.yaml": "# Example state content\n"
-        },
-        "code": {
-            "example_code.py": "# Example code content\n"
-        }
-    }
+    if (os.path.exists(os.path.join(current_dir, 'main.yaml')) or
+        os.path.exists(os.path.join(current_dir, 'state')) or
+        os.path.exists(os.path.join(current_dir, 'code'))):
+        click.echo("Project has already been initialized. No changes made.")
+        return
 
-    for name, content in project_structure.items():
-        if isinstance(content, dict):
-            dir_path = os.path.join(current_dir, name)
-            os.makedirs(dir_path, exist_ok=True)
-            for sub_name, sub_content in content.items():
-                sub_path = os.path.join(dir_path, sub_name)
-                with open(sub_path, 'w') as f:
-                    f.write(sub_content)
-        else:
-            file_path = os.path.join(current_dir, name)
-            with open(file_path, 'w') as f:
-                f.write(content)
+    # Create main.yaml
+    with open(os.path.join(current_dir, 'main.yaml'), 'w') as f:
+        f.write(MAIN_YAML_CONTENT)
+
+    # Create state directory and home_page_state.yaml
+    os.makedirs(os.path.join(current_dir, 'state'), exist_ok=True)
+    with open(os.path.join(current_dir, 'state', 'home_page_state.yaml'), 'w') as f:
+        f.write(HOME_PAGE_STATE_CONTENT)
+
+    # Create code directory and files
+    os.makedirs(os.path.join(current_dir, 'code'), exist_ok=True)
+    with open(os.path.join(current_dir, 'code', 'questions.json'), 'w') as f:
+        f.write(QUESTIONS_JSON_CONTENT)
+    with open(os.path.join(current_dir, 'code', 'level1.js'), 'w') as f:
+        f.write(LEVEL1_JS_CONTENT)
+
+    click.echo("Project structure initialized successfully.")
+
+from .__version__ import __version__
 
 @click.group()
+@click.version_option(__version__, '-v', '--version', message='%(version)s')
 def cli():
     pass
+
+@click.group(invoke_without_command=True)
+@click.pass_context
+def cli(ctx):
+    if ctx.invoked_subcommand is None:
+        # If no subcommand is invoked, call the default command
+        ctx.invoke(encode)
 
 @cli.command()
 @click.argument('json_file', type=click.File('r'))
@@ -120,7 +132,7 @@ def decode(json_file, output):
 
 
 @cli.command()
-@click.argument('yaml_file', type=click.File('r'))
+@click.argument('yaml_file', type=click.File('r'), default='main.yaml')
 @click.option('--output', '-o', type=click.File('w'), default='-',
               help='Output file path. Defaults to stdout.')
 def encode(yaml_file, output):
