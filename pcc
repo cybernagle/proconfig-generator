@@ -13,6 +13,7 @@ from termcolor import colored
 class Loader(yaml.SafeLoader):
     def __init__(self, stream):
         self._root = os.path.split(stream.name)[0]
+        self._headers = ['state', 'inputs', 'outputs', 'transitions', 'render', 'tasks']
         self._state = []
         super(Loader, self).__init__(stream)
 
@@ -31,13 +32,15 @@ class Loader(yaml.SafeLoader):
                     file_data = yaml.load(f, Loader=yaml.FullLoader)
                     if isinstance(file_data, dict) and file_data:
                         data.update(file_data)
-                        second_level = file_data[list(file_data.keys())[0]]
-                        colored_data = self.check_fields(second_level)
-                        self._state += [["State Name", colored(filename, 'blue')]]
-                        self._state += colored_data
+                        self.handle_stage(file_data)
                     elif isinstance(file_data, list):
                         data[filename] = file_data
         return data
+
+    def handle_stage(self, stages):
+        for state_name in list(stages.keys()):
+            state = stages[state_name]
+            self.update_fields(state_name ,state)
 
     def oneline(self, node):
         file_path = self.construct_scalar(node)
@@ -48,27 +51,25 @@ class Loader(yaml.SafeLoader):
         with open(file_path, 'r') as f:
             return f.read()#.replace('\\n', '\n')
 
-    def check_fields(self, yaml_data):
-        fields = ['inputs', 'outputs', 'transitions', 'render', 'tasks']
-        result = []
-        for field in fields:
-            if field in yaml_data:
-                result.append([field, colored('Yes', 'green')])
+    def update_fields(self, state_name ,state_data):
+        single_state = []
+        for header in self._headers:
+            if header in state_data:
+                single_state.append(colored('Yes', 'green'))
+            elif header == "state":
+                single_state.append(colored(state_name, 'yellow'))
             else:
-                result.append([field, colored('No', 'red')])
-        return result
+                single_state.append(colored('No', 'red'))
 
-    #@staticmethod
+        self._state += [single_state]
+
     def print_table(self, data):
-        #headers = ['Field', 'Exists']
-        headers = []
-        print(tabulate(data, headers, tablefmt='grid'), file=sys.stderr)
+        headers_upper = [header.upper() for header in self._headers]
+        colalign = ["right"] * len(headers_upper)
+        print(tabulate(data, headers=headers_upper, tablefmt='plain', colalign=colalign))
 
     def __del__(self):
         if self._state:
-            # transposed_data = list(zip(*self._state))
-            # print(transposed_data)
-            # self.print_table(transposed_data)
             self.print_table(self._state)
 
 Loader.add_constructor('!include', Loader.include)
@@ -97,6 +98,10 @@ def y2j(yaml_file, output):
     yaml_data = yaml.load(yaml_file, Loader)
     json.dump(yaml_data, output)
 
+@cli.command()
+@click.argument('yaml_file', type=click.File('r'))
+def check(yaml_file):
+    yaml_data = yaml.load(yaml_file, Loader)
 
 if __name__ == '__main__':
     cli()
