@@ -68,7 +68,7 @@ class Loader(yaml.SafeLoader):
     def print_table(self, data):
         headers_upper = [header.upper() for header in self._headers]
         colalign = ["right"] * len(headers_upper)
-        print(tabulate(data, headers=headers_upper, tablefmt='plain', colalign=colalign))
+        print(tabulate(data, headers=headers_upper, tablefmt='plain', colalign=colalign),file=sys.stderr)
 
     def __del__(self):
         if self._state:
