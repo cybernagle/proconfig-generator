@@ -6,10 +6,13 @@ import json
 import yaml
 import click
 
+import jsonschema
+from jsonschema import validate
 from tabulate import tabulate
 from termcolor import colored
 
 from . import MAIN_YAML_CONTENT, HOME_PAGE_STATE_CONTENT, QUESTIONS_JSON_CONTENT, LEVEL1_JS_CONTENT
+from . import schema
 
 # class to implement a custom YAML loader
 class Loader(yaml.SafeLoader):
@@ -38,6 +41,10 @@ class Loader(yaml.SafeLoader):
                     elif isinstance(file_data, list):
                         data[filename] = file_data
         return data
+
+    def find_states(self, data):
+        """try to parse states from any part of data, and analysis it."""
+        pass
 
     def handle_stage(self, stages):
         for state_name in list(stages.keys()):
@@ -76,6 +83,19 @@ class Loader(yaml.SafeLoader):
 
 Loader.add_constructor('!include', Loader.include)
 Loader.add_constructor('!oneline', Loader.oneline)
+
+def validate_proconfig(json_data):
+    try:
+        validate(instance=json_data, schema=schema)
+    except jsonschema.ValidationError as e:
+        error_message = (
+            f"Validation error: {e.message}\n"
+            f"Path to error: {list(e.path)}\n"
+            f"Schema path: {list(e.schema_path)}\n"
+            f"Error details: {e.json_path}"
+        )
+        raise click.UsageError(f"Invalid JSON content: {error_message}")
+
 
 def create_project_structure():
     """Initialize the project structure."""
@@ -130,6 +150,8 @@ def decode(json_file, output):
     except json.JSONDecodeError:
         raise click.UsageError(f"Invalid JSON format in file: {json_file.name}")
 
+    validate_proconfig(json_data)
+
     yaml.dump(json_data, output, default_flow_style=False)
 
 
@@ -143,6 +165,8 @@ def encode(yaml_file, output):
         yaml_data = yaml.load(yaml_file, Loader)
     except yaml.YAMLError:
         raise click.UsageError(f"Invalid YAML format in file: {yaml_file.name}")
+
+    validate_proconfig(yaml_data)
 
     json.dump(yaml_data, output)
 

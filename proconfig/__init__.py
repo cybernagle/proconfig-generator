@@ -56,3 +56,150 @@ function main(params) {
 }
 """
 
+schema = {
+    "type": "object",
+    "properties": {
+        "context": {"type": "object"},
+        "id": {"type": "string"},
+        "initial": {"type": "string"},
+        "inputs": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["text", "image", "audio", "IM"]
+                        },
+                        "value": {"type": "string"},
+                        "default_value": {"type": "string"},
+                        "user_input": {"type": "boolean"},
+                        "name": {"type": "string"},
+                        "description": {"type": "string"},
+                        "choices": {
+                            "type": "array",
+                            "items": {"type": "string"}
+                        },
+                        "validations": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "required": {"type": "boolean", "default": True},
+                                    "max_length": {"type": "number", "default": 1500},
+                                    "max_file_size": {"type": "number"},
+                                    "max_number": {"type": "number"},
+                                    "min_number": {"type": "number"},
+                                    "error_message": {"type": "string"}
+                                },
+                                "additionalProperties": False
+                            }
+                        }
+                    },
+                    "required": ["type"],
+                    "additionalProperties": False
+                }
+            }
+        },
+        "outputs": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "enum": ["text", "image", "audio"]
+                        },
+                        "value": {"type": "string"}
+                    },
+                    "required": ["type"],
+                    "additionalProperties": False
+                }
+            }
+        },
+        "states": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "string"},
+                        "type": {"type": "string", "enum": ["state"]},
+                        "properties": {
+                            "type": "object",
+                            "properties": {
+                                "is_final": {"type": "boolean"},
+                                "cache": {"type": "boolean"}
+                            },
+                            "required": ["is_final", "cache"],
+                            "additionalProperties": False
+                        },
+                        "inputs": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": ["object", "string"]
+                                }
+                            }
+                        },
+                        "tasks": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": "object"
+                                }
+                            }
+                        },
+                        "outputs": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": ["object", "string"]
+                                }
+                            }
+                        },
+                        "render": {
+                            "type": "object",
+                            "properties": {
+                                "text": {"type": "string"},
+                                "image": {"type": "string"},
+                                "audio": {"type": "string"},
+                                "buttons": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "content": {"type": "string"},
+                                            "description": {"type": "string"},
+                                            "on_click": {"type": "string"},
+                                            "button_id": {"type": "string"}
+                                        },
+                                        "required": ["content", "on_click"],
+                                        "additionalProperties": False
+                                    }
+                                }
+                            },
+                            "additionalProperties": False
+                        },
+                        "transitions": {
+                            "type": "object",
+                            "patternProperties": {
+                                ".*": {
+                                    "type": ["object", "string"]
+                                }
+                            }
+                        }
+                    },
+                    "required": ["id", "type", "properties", "inputs", "tasks", "outputs", "render", "transitions"],
+                    "additionalProperties": False
+                }
+            }
+        },
+        "transitions": {"type": "object"},
+        "type": {"type": "string", "enum": ["automata"]}
+    },
+    "required": ["context", "id", "initial", "inputs", "outputs", "states", "transitions", "type"],
+    "additionalProperties": False
+}
