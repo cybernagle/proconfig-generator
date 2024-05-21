@@ -145,13 +145,43 @@ schema = {
                             }
                         },
                         "tasks": {
-                            "type": "object",
-                            "patternProperties": {
-                                ".*": {
-                                    "type": "object"
-                                }
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "module_config": {
+                                        "type": "object",
+                                        "properties": {
+                                            "need_memory": {
+                                                "type": "boolean"
+                                            },
+                                            "output_name": {
+                                                "type": "string"
+                                            },
+                                            "system_prompt": {
+                                                "type": "string"
+                                            },
+                                            "user_prompt": {
+                                                "type": "string"
+                                            },
+                                            "widget_id": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": ["output_name", "widget_id"],
+                                        "additionalProperties": True
+                                    },
+                                    "module_type": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["module_config", "module_type", "name"],
+                                "additionalProperties": False
                             }
-                        },
+                       },
                         "outputs": {
                             "type": "object",
                             "patternProperties": {
@@ -173,7 +203,12 @@ schema = {
                                         "properties": {
                                             "content": {"type": "string"},
                                             "description": {"type": "string"},
-                                            "on_click": {"type": "string"},
+                                            "on_click": {
+                                                "oneOf": [
+                                                    {"type": "string"},
+                                                    {"type": "object"},
+                                                ]
+                                            },
                                             "button_id": {"type": "string"}
                                         },
                                         "required": ["content", "on_click"],
@@ -187,12 +222,30 @@ schema = {
                             "type": "object",
                             "patternProperties": {
                                 ".*": {
-                                    "type": ["object", "string"]
+                                    "oneOf": [
+                                        { "type": "object" },
+                                        { "type": "string" },
+                                        {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "condition": {
+                                                        "type": "string"
+                                                    },
+                                                    "target": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "required": ["target"],
+                                                "additionalProperties": False
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         }
                     },
-                    "required": ["id", "type", "properties", "inputs", "tasks", "outputs", "render", "transitions"],
                     "additionalProperties": False
                 }
             }
@@ -200,6 +253,6 @@ schema = {
         "transitions": {"type": "object"},
         "type": {"type": "string", "enum": ["automata"]}
     },
-    "required": ["context", "id", "initial", "inputs", "outputs", "states", "transitions", "type"],
+    "required": [],
     "additionalProperties": False
 }

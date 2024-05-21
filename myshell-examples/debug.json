@@ -79,7 +79,6 @@
       "outputs": {
         "context.reply": "{{reply}}",
         "context.one": "\"str(\" {{String(reply)}} \") == str(\" {{context.correct_answer}} \")\" ",
-        "context.two": "{{String(user_prompt)}}\".trim().split(\" \" \" \").length() <=3 && \"{{String(reply)}}\".split(\\" \\").length() >= 30\"",
         "context.three": "\"{{String(user_prompt)}}.trim().split(\" \").length() <=1 && {{String(reply)}}.split(\" \").length() >= 100\"",
         "context.your_answer": "{{user_prompt.trim()}}",
         "context.memory": "{{user_prompt}}"

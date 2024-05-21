@@ -21,6 +21,7 @@ context:
     variables exist)? \n A. context.variable \n B. variable \n C. variable1 + variable2
     \n D. np.array(variable)", "answer": "D", "explanation": "Our expression supports
     JavaScript grammar."}]'
+  tts_widget_id: ''
 id: advanced_example_demo
 initial: home_page_state
 inputs: {}
@@ -28,13 +29,12 @@ outputs: {}
 states:
   analyze_answer_state:
     inputs:
-      button_id:
+      chosen_answer:
         type: text
         user_input: false
-        value: UNSTABLE_button_id
     outputs:
-      context.chosen_answer: '{{button_id}}'
-      context.is_correct: '{{button_id == context.correct_answer}}'
+      context.chosen_answer: '{{chosen_answer}}'
+      context.is_correct: '{{chosen_answer == context.correct_answer}}'
     render:
       text: Check answer state.
     transitions:
@@ -62,7 +62,9 @@ states:
     - module_config:
         memory: '{{context.memory}}'
         output_name: reply
-        system_prompt: You are a teacher teaching Pro Config.
+        system_prompt: 'You are a teacher teaching Pro Config. Pro Config is a powerful
+          tool to build AI native applications. Here are some questions and answers
+          about basic concepts of Pro Config: {{context.questions_string}}'
         user_prompt: '{{user_message}}'
         widget_id: '1744214024104448000'
       module_type: AnyWidgetModule
@@ -70,6 +72,7 @@ states:
     - module_config:
         content: '{{reply}}'
         output_name: reply_voice
+        widget_id: '{{context.tts_widget_id}}'
       module_type: AnyWidgetModule
       name: generate_voice
     transitions:
@@ -109,11 +112,16 @@ states:
           you today
         type: text
         user_input: true
+      tts_widget_id:
+        default_value: '1743159010695057408'
+        type: text
+        user_input: true
     outputs:
       context.correct_count: '{{0}}'
       context.intro_message: '{{intro_message}}'
       context.question_idx: '{{0}}'
       context.questions: '{{JSON.parse(context.questions_string)}}'
+      context.tts_widget_id: '{{tts_widget_id}}'
     render:
       buttons:
       - content: Quiz
@@ -125,25 +133,36 @@ states:
       context.correct_answer: '{{context.questions[context.question_idx][''answer'']}}'
     render:
       buttons:
-      - UNSTABLE_button_id: A
-        content: A.
+      - content: A.
         description: Choose A.
-        on_click: check_answer
-      - UNSTABLE_button_id: B
-        content: B.
+        on_click:
+          event: check_answer
+          payload:
+            chosen_answer: A
+      - content: B.
         description: Choose B.
-        on_click: check_answer
-      - UNSTABLE_button_id: C
-        content: C.
+        on_click:
+          event: check_answer
+          payload:
+            chosen_answer: B
+      - content: C.
         description: Choose C.
-        on_click: check_answer
-      - UNSTABLE_button_id: D
-        content: D.
+        on_click:
+          event: check_answer
+          payload:
+            chosen_answer: C
+      - content: D.
         description: Choose D.
-        on_click: check_answer
+        on_click:
+          event: check_answer
+          payload:
+            chosen_answer: D
       text: '{{context.question_idx + 1}}. {{context.questions[context.question_idx][''question'']}}'
     transitions:
-      check_answer: analyze_answer_state
+      check_answer:
+        target: analyze_answer_state
+        target_inputs:
+          chosen_answer: '{{payload.chosen_answer}}'
   review_state:
     outputs:
       context.memory: '{{[]}}'
