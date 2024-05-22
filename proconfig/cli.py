@@ -13,6 +13,7 @@ from termcolor import colored
 
 from . import MAIN_YAML_CONTENT, HOME_PAGE_STATE_CONTENT, QUESTIONS_JSON_CONTENT, LEVEL1_JS_CONTENT
 from . import schema
+from .graph import dash_cytoscape_graph
 
 # class to implement a custom YAML loader
 class Loader(yaml.SafeLoader):
@@ -48,13 +49,7 @@ class Loader(yaml.SafeLoader):
             raise FileNotFoundError(f"File {file_path} not found")
 
         with open(file_path, 'r') as f:
-            return f.read()#.replace('\\n', '\n')
-
-
-    def print_table(self, data):
-        headers_upper = [header.upper() for header in self._headers]
-        colalign = ["right"] * len(headers_upper)
-        print(tabulate(data, headers=headers_upper, tablefmt='plain', colalign=colalign),file=sys.stderr)
+            return f.read()
 
 Loader.add_constructor('!include', Loader.include)
 Loader.add_constructor('!oneline', Loader.oneline)
@@ -175,6 +170,14 @@ def check(yaml_file):
     """Check the state for missing part."""
     yaml_data = load_file(yaml_file.name)
     validate_proconfig(yaml_data)
+
+@cli.command()
+@click.argument('yaml_file', type=click.File('r'))
+def draw(yaml_file):
+    """Check the state for missing part."""
+    yaml_data = load_file(yaml_file.name)
+    dash_cytoscape_graph(yaml_data)
+
 
 @cli.command()
 def init():

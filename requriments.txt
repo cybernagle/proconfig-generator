@@ -2,4 +2,8 @@ pyyaml
 tabulate
 termcolor
 jsonschema
+networkx
+matplotlib
 click
+dash
+dash_cytoscape
