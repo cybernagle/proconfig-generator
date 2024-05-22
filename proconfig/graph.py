@@ -60,7 +60,7 @@ def dash_cytoscape_graph(data):
                         'color': '#FFFFFF',
                         'text-valign': 'center',
                         'text-halign': 'center',
-                        'font-size': '1px',
+                        'font-size': '2px',
                         "width": "20px",
                         "height": "8px"
                     }
@@ -73,7 +73,7 @@ def dash_cytoscape_graph(data):
                         'target-arrow-color': '#0074D9',
                         'target-arrow-shape': 'triangle',
                         'curve-style': 'bezier',
-                        'font-size': '1px',
+                        'font-size': '2px',
                         "width": "0.3px",
                         'arrow-scale': 0.2
                     }
