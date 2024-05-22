@@ -139,17 +139,13 @@ def create_project_structure():
 
 from .__version__ import __version__
 
-@click.group()
-@click.version_option(__version__, '-v', '--version', message='%(version)s')
-def cli():
-    pass
 
 @click.group(invoke_without_command=True)
+@click.version_option(__version__, '-v', '--version', message='%(version)s')
 @click.pass_context
 def cli(ctx):
     if ctx.invoked_subcommand is None:
-        # If no subcommand is invoked, call the default command
-        ctx.invoke(encode)
+        click.echo(ctx.get_help())
 
 @cli.command()
 @click.argument('json_file', type=click.File('r'))
