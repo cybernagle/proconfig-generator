@@ -1,3 +1,5 @@
 pyyaml
 tabulate
 termcolor
+jsonschema
+click
