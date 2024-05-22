@@ -21,11 +21,48 @@ The MyShell ProConfig Generator takes your existing `proconfig` and converts it 
 To get started with the MyShell ProConfig Generator, clone this repository and follow the setup instructions. This project requires Python to be installed on your system.
 
 ```
-git clone https://github.com/cybernagle/proconfig-generator.git
-cd proconfig-generator
-pip install -r requirments.txt
-./pcc y2j main.yaml
+pip install proconfig==0.1.6
+pcc
 ```
+
+#### Validate your ProConfig
+
+> pcc check your_proconfig.json
+> pcc check your_procinfg.yaml
+
+```
+DATA validation successful: The provided ProConfig Code is valid.
+
+          STATE    INPUTS    OUTPUTS    TRANSITIONS    RENDER    TASKS
+   review_state        No        Yes            Yes       Yes       No
+    award_state        No        Yes            Yes       Yes       No
+chat_page_state       Yes        Yes            Yes       Yes      Yes
+ question_state       Yes        Yes            Yes       Yes       No
+  analyze_state       Yes        Yes            Yes       Yes      Yes
+    judge_state        No        Yes            Yes        No      Yes
+  correct_state        No        Yes            Yes       Yes       No
+incorrect_state        No        Yes            Yes       Yes       No
+ continue_state        No         No            Yes       Yes       No
+home_page_state       Yes        Yes            Yes       Yes       No
+
+```
+
+#### Enocode your proconfig yaml
+
+> pcc encode your_proconfig.yaml
+
+you will get `output.json`
+
+also, you can try: `pcc encode your_proconfig.yaml --output your_proconfig.yaml`
+
+#### Import your proconfig
+
+> pcc decode your_proconfig.json
+
+you will get `output.yaml`, if you want customize output file name, you can try `pcc decode your_proconfig.json --output your_proconfig.yaml`
+
+split all your state into a single state yaml. and put it into path `/state`
+
 
 Feel free to contribute to the project by submitting pull requests or reporting issues. Together, we can make MyShell configuration a breeze!
 

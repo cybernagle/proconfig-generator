@@ -21,10 +21,37 @@ MyShell ProConfig 生成器将您现有的 `proconfig` 转换为 YAML 表示形�
 要开始使用 MyShell ProConfig 生成器，请克隆此仓库并按照设置说明进行操作。此项目要求您的系统上安装了 Python。
 
 ```
-git clone https://github.com/cybernagle/proconfig-generator.git
-cd proconfig-generator
-pip install -r requirments.txt
-./pcc y2j main.yaml
+# 检查你的 yaml 或者 json
+pcc check 你的文件.json
+pcc check 你的文件.yaml
+
+# 你可以直接本项目的 main.yaml 
+pcc check main.yaml
+
+DATA validation successful: The provided ProConfig Code is valid.
+          STATE    INPUTS    OUTPUTS    TRANSITIONS    RENDER    TASKS
+   review_state        No        Yes            Yes       Yes       No
+    award_state        No        Yes            Yes       Yes       No
+chat_page_state       Yes        Yes            Yes       Yes      Yes
+ question_state       Yes        Yes            Yes       Yes       No
+  analyze_state       Yes        Yes            Yes       Yes      Yes
+    judge_state        No        Yes            Yes        No      Yes
+  correct_state        No        Yes            Yes       Yes       No
+incorrect_state        No        Yes            Yes       Yes       No
+ continue_state        No         No            Yes       Yes       No
+home_page_state       Yes        Yes            Yes       Yes       No
+
+# 发布你的 proconfig, 将其转变成 json, 你会得到 output.json
+pcc encode your_project.yaml
+
+# 如果你需要定制输出名称
+pcc encode your_project.yaml --output your_project.json
+
+
+# 从 json import 进来, 默认输出到 output.yaml
+pcc decode your_project.json
+# 定制输出名称
+pcc decode your_project.json --output your_project.yaml
 ```
 
 欢迎通过提交拉取请求或报告问题来为项目做出贡献。我们可以一起使 MyShell 配置变得轻而易举！
