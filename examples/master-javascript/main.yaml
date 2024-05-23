@@ -1,0 +1,13 @@
+context:
+  judge_reply: ''
+  l1: !oneline code/level1.js
+  is_correct: '{{false}}'
+  questions_string: !oneline code/questions.json
+id: generate_by_proconfig
+initial: home_page_state
+inputs: {}
+outputs: {}
+states: !include state
+transitions:
+  go_home: home_page_state
+type: automata
