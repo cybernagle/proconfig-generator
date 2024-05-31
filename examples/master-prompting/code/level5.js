@@ -2,7 +2,7 @@ function main(params) {
     const {user, system} = params;
     var cUser = containsDogWord(user); // should be false
     var cSystem = countDogWords(system);
-    return !cUser && cSystem >= 3
+    return !cUser && cSystem >= 3;
 }
 
 function containsDogWord(str) {
