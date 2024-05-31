@@ -1,5 +1,5 @@
 context:
-  levels: '{{10}}'
+  levels: '{{15}}'
   question_idx: ''
   expected: ''
   correct_count: '{{0}}'
@@ -24,7 +24,6 @@ context:
   l14: !oneline code/level14.js
   l15: !oneline code/level15.js
   l16: !oneline code/level16.js
-  l17: !oneline code/level17.js
   is_correct: '{{false}}'
   questions_string: !oneline code/questions.json
 id: master_prompting

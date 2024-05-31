@@ -84,19 +84,13 @@
       "encourage": "失败只是告诉我们，成功还在前方等着我们！🔮 / Failure just tells us that success is still waiting for us ahead! 🔮"
   },
   {
-      "question": "## 第十五关，每一关都显得更加精彩！🎲 / Level 15, each level gets more exciting! 🎲\nplease enter a question of one word so that the model's answer is within 16 words (The Chinese version of this problem may not have a correct answer, but the English version might).\n本题可能没有答案，你可以自由的先去做其他的题。请输入一个字的问题，使模型的回答在16个字以内。\n\n",
+      "question": "## 第十五关，接近终点，全力以赴！🌊 / Level 15, close to the finish line, go all out! 🌊\nplease enter a positive integer greater than one as the question so that the answer contains a number that is exactly 1 different from it.\n请输入一个大于一的正整数作为问题，使回答里包含和它刚好相差1的数。\n\n",
       "answer": "",
-      "congrats": "第十五关，完美！继绀前进！🎖️ / Level 15, perfect! Continue moving forward! 🎖️",
-      "encourage": "当你觉得想要放弃时，记得你已经走了多远。🌌 / When you feel like giving up, remember how far you've already come. 🌌"
-  },
-  {
-      "question": "## 第十六关，接近终点，全力以赴！🌊 / Level 16, close to the finish line, go all out! 🌊\nplease enter a positive integer greater than one as the question so that the answer contains a number that is exactly 1 different from it.\n请输入一个大于一的正整数作为问题，使回答里包含和它刚好相差1的数。\n\n",
-      "answer": "",
-      "congrats": "你已经征服了第十六关，终点就在眼前！🏙️ / You have conquered Level 16, the finish line is in sight! 🏙️",
+      "congrats": "你已经征服了第十五关，终点就在眼前！🏙️ / You have conquered Level 15, the finish line is in sight! 🏙️",
       "encourage": ""
   },
   {
-      "question": "## 第十七关，最后的挑战，让我们见证你的荣耀！👑 / Level 17, the final challenge, let us witness your glory! 👑\nPlease construct a question of no less than ten words so that the answer does not contain any of the characters in the question.\n请构造一个不少于十个字的问题，使得回答中不包含问题中的任意字符。\n\n",
+      "question": "## 第十六关，最后的挑战，让我们见证你的荣耀！👑 / Level 16, the final challenge, let us witness your glory! 👑\nPlease construct a question of no less than ten words so that the answer does not contain any of the characters in the question.\n请构造一个不少于十个字的问题，使得回答中不包含问题中的任意字符。\n\n",
       "answer": "",
       "congrats": "非凡成就！你已经完成了所有的关卡！🎆 / Extraordinary achievement! You have completed all levels! 🎆",
       "encourage": "即便是在最后一关，失败也不是结束，而是新开始的标志！🌈 / Even at the last level, failure is not the end, but the sign of a new beginning!"

@@ -28,7 +28,6 @@ judge_state:
           context.question_idx == 13 ? context.l14 :
           context.question_idx == 14 ? context.l15 :
           context.question_idx == 15 ? context.l16 :
-          context.question_idx == 16 ? context.l17 :
           "false"}}'
       output_name: result
     module_type: AnyWidgetModule
